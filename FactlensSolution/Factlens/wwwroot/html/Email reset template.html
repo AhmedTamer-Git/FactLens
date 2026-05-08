@@ -1,0 +1,327 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Reset your FactLens password</title>
+    <link rel="icon" href="../assets/favicon.png" type="image/png">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #F0F2F5;
+            color: #1A305B;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        .email-wrapper {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #FFFFFF;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,.10);
+        }
+
+        /* Header */
+        .email-header {
+            background: linear-gradient(135deg, #1A305B 0%, #243f73 100%);
+            padding: 40px 48px 36px;
+            text-align: center;
+            position: relative;
+        }
+
+            .email-header::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(205,167,85,.22) 0%, transparent 65%);
+                pointer-events: none;
+            }
+
+        .brand {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: #FFFFFF;
+            letter-spacing: .02em;
+            position: relative;
+            z-index: 1;
+        }
+
+            .brand span {
+                color: #CDA755;
+            }
+
+        .brand-icon {
+            display: block;
+            font-size: 36px;
+            margin-bottom: 10px;
+            color: #CDA755;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-tagline {
+            font-size: 13px;
+            color: rgba(255,255,255,.60);
+            margin-top: 6px;
+            letter-spacing: .04em;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Body */
+        .email-body {
+            padding: 44px 48px;
+        }
+
+        /* Icon box */
+        .icon-box {
+            width: 72px;
+            height: 72px;
+            background: rgba(205,167,85,.12);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 28px;
+            font-size: 32px;
+        }
+
+        /* Title */
+        .email-title {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 26px;
+            color: #1A305B;
+            text-align: center;
+            margin-bottom: 14px;
+            line-height: 1.25;
+        }
+
+            .email-title em {
+                color: #CDA755;
+                font-style: italic;
+            }
+
+        /* Text */
+        .email-text {
+            font-size: 15px;
+            color: #78808A;
+            line-height: 1.75;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        /* CTA Button */
+        .cta-wrap {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background: #CDA755;
+            color: #1A305B !important;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 700;
+            padding: 15px 40px;
+            border-radius: 8px;
+            letter-spacing: .02em;
+            box-shadow: 0 4px 20px rgba(205,167,85,.35);
+        }
+
+        /* Divider */
+        .divider {
+            border: none;
+            border-top: 1px solid #E9ECEF;
+            margin: 28px 0;
+        }
+
+        /* Fallback link */
+        .fallback-box {
+            background: #F8F9FA;
+            border-radius: 10px;
+            padding: 18px 20px;
+            margin-bottom: 28px;
+        }
+
+        .fallback-label {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: #9CA3AF;
+            margin-bottom: 8px;
+        }
+
+        .fallback-url {
+            font-size: 12px;
+            color: #3b82f6;
+            word-break: break-all;
+            line-height: 1.6;
+        }
+
+        /* Warning */
+        .warning-box {
+            background: rgba(245,158,11,.08);
+            border-left: 3px solid #f59e0b;
+            border-radius: 0 8px 8px 0;
+            padding: 14px 18px;
+            margin-bottom: 28px;
+            font-size: 13px;
+            color: #78808A;
+            line-height: 1.6;
+        }
+
+            .warning-box strong {
+                color: #1A305B;
+            }
+
+        /* Security notice */
+        .security-box {
+            background: rgba(239,68,68,.06);
+            border-left: 3px solid #ef4444;
+            border-radius: 0 8px 8px 0;
+            padding: 14px 18px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #78808A;
+            line-height: 1.6;
+        }
+
+            .security-box strong {
+                color: #1A305B;
+            }
+
+        /* Footer */
+        .email-footer {
+            background: #F8F9FA;
+            padding: 24px 48px;
+            text-align: center;
+            border-top: 1px solid #E9ECEF;
+        }
+
+        .footer-brand {
+            font-family: Georgia, serif;
+            font-size: 16px;
+            color: #1A305B;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+            .footer-brand span {
+                color: #CDA755;
+            }
+
+        .footer-text {
+            font-size: 12px;
+            color: #9CA3AF;
+            line-height: 1.6;
+        }
+
+            .footer-text a {
+                color: #a8883e;
+                text-decoration: none;
+            }
+
+        /* Mobile */
+        @media (max-width: 640px) {
+            .email-wrapper {
+                margin: 0;
+                border-radius: 0;
+                box-shadow: none;
+            }
+
+            .email-header {
+                padding: 32px 24px 28px;
+            }
+
+            .email-body {
+                padding: 32px 24px;
+            }
+
+            .email-footer {
+                padding: 20px 24px;
+            }
+
+            .email-title {
+                font-size: 22px;
+            }
+
+            .cta-btn {
+                padding: 14px 28px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-wrapper">
+
+        <!-- Header -->
+        <div class="email-header">
+            <span class="brand-icon">⬡</span>
+            <div class="brand">Fact<span>Lens</span></div>
+            <div class="header-tagline">AI-Powered News Verification</div>
+        </div>
+
+        <!-- Body -->
+        <div class="email-body">
+
+            <div class="icon-box">🔑</div>
+
+            <h1 class="email-title">Reset your <em>Password</em></h1>
+
+            <p class="email-text">
+                We received a request to reset your FactLens password.<br />
+                Click the button below to choose a new password.
+            </p>
+
+            <!-- ⬇ REPLACE {RESET_LINK} with the actual URL from C# -->
+            <div class="cta-wrap">
+                <a href="{RESET_LINK}" class="cta-btn">🔒 &nbsp;Reset My Password</a>
+            </div>
+
+            <!-- Warning -->
+            <div class="warning-box">
+                <strong>⏱ This link expires in 1 hour.</strong><br />
+                If you didn't request a password reset, you can safely ignore this email.
+            </div>
+
+            <!-- Security notice -->
+            <div class="security-box">
+                <strong>🔐 Security tip:</strong> FactLens will never ask for your password via email.
+                If you didn't request this, please secure your account immediately.
+            </div>
+
+            <hr class="divider" />
+
+            <!-- Fallback URL -->
+            <div class="fallback-box">
+                <div class="fallback-label">Or copy this link into your browser</div>
+                <!-- ⬇ REPLACE {RESET_LINK} here too -->
+                <div class="fallback-url">{RESET_LINK}</div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="email-footer">
+            <div class="footer-brand">Fact<span>Lens</span></div>
+            <div class="footer-text">
+                © 2025 FactLens — AI-Powered News Verification<br />
+                You received this email because a password reset was requested for this address.<br />
+                <a href="#">Privacy Policy</a> · <a href="#">Terms of Service</a>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FactLens — AI News Verification</title>
+    <link rel="stylesheet" href="../css/variables.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/home.css" />
+    <link rel="stylesheet" href="../css/responsive.css" />
+    <link rel="icon" href="../assets/favicon.png" type="image/png">
+</head>
+<body>
+    <nav id="main-nav"></nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-bg-pattern"></div>
+        <div class="hero-content">
+            <div class="hero-badge">✦ AI-Powered Fact Checking</div>
+            <h1>Verify News <em>Credibility</em><br />with Precision AI</h1>
+            <p>Paste any news article, claim, or URL — or upload an image. Our AI cross-references thousands of trusted sources and returns a confidence verdict in seconds.</p>
+
+            <div class="analyze-box">
+
+                <!-- ── Input Mode Tabs ── -->
+                <div class="input-tabs">
+                    <button class="input-tab active" id="tabText" onclick="switchTab('text')">
+                        <span class="tab-icon">📝</span> Text / URL
+                    </button>
+                    <button class="input-tab" id="tabImage" onclick="switchTab('image')">
+                        <span class="tab-icon">🖼️</span> Image
+                    </button>
+                </div>
+
+                <!-- ── Text Panel ── -->
+                <div id="panelText">
+                    <div class="textarea-wrap">
+                        <textarea id="newsInput" placeholder="Paste a news article, a claim, or a URL to verify…" rows="4" maxlength="5000"></textarea>
+                        <div class="char-count"><span id="charCount">0</span> / 5000</div>
+                    </div>
+                    <div id="urlBadge" style="display:none;align-items:center;gap:8px;margin:6px 0;padding:8px 14px;background:rgba(26,48,91,.07);border-radius:8px;border:1.5px solid rgba(26,48,91,.15);font-size:13px;font-weight:600;color:var(--navy);">
+                        🔗 <span>URL detected — we'll scrape and verify this page</span>
+                    </div>
+                </div>
+
+                <!-- ── Image Panel ── -->
+                <div id="panelImage" style="display:none;">
+                    <div class="upload-zone" id="uploadZone">
+                        <input type="file" id="imageInput" accept="image/jpeg,image/png,image/webp" style="display:none;" />
+                        <div class="upload-idle" id="uploadIdle">
+                            <div class="upload-icon">🖼️</div>
+                            <p class="upload-title">Drop your image here</p>
+                            <p class="upload-sub">or <button class="upload-browse" onclick="document.getElementById('imageInput').click()">browse files</button></p>
+                            <p class="upload-hint">JPEG · PNG · WebP — max 10 MB</p>
+                        </div>
+                        <div class="upload-preview" id="uploadPreview" style="display:none;">
+                            <img id="previewImg" src="" alt="Preview" />
+                            <div class="preview-info">
+                                <span id="previewName" class="preview-name"></span>
+                                <button class="preview-remove" onclick="clearImage()">✕ Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p id="errorMsg" class="error-msg"></p>
+
+                <div class="analyze-actions">
+                    <button id="analyzeBtn" class="btn-primary analyze-btn">
+                        <span class="btn-icon">⬡</span>
+                        <span id="btnText">Analyze News</span>
+                    </button>
+                    <button id="cancelBtn" class="btn-outline" style="display:none">✕ Cancel</button>
+                </div>
+            </div>
+
+            <!-- ── Full-page Loading Overlay ── -->
+            <div id="analyzingOverlay" class="analyzing-overlay" style="display:none;">
+                <div class="analyzing-card">
+                    <div class="analyzing-spinner"></div>
+                    <p class="analyzing-title">Analyzing with AI…</p>
+                    <p class="analyzing-sub" id="analyzingSub">Cross-referencing sources</p>
+                    <div class="analyzing-dots">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features-section">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Instant Analysis</h3>
+                    <p>Get credibility scores in seconds with our advanced AI engine.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Source Verification</h3>
+                    <p>Cross-referenced with trusted sources and fact-checking databases.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Detailed Reports</h3>
+                    <p>Comprehensive explanations with key facts and evidence sources.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="footer-inner">
+            <div>
+                <div class="footer-brand-name">Fact<strong>Lens</strong></div>
+                <p class="footer-desc">Empowering users to verify news credibility with advanced AI technology.</p>
+            </div>
+            <div>
+                <div class="footer-heading">Navigation</div>
+                <div class="footer-links">
+                    <a href="home.html">Home</a>
+                    <a href="history.html">History</a>
+                </div>
+            </div>
+            <div>
+                <div class="footer-heading">Legal</div>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">FactLens © 2025 — Powered by AI</div>
+    </footer>
+
+    <script src="../js/shared.js"></script>
+    <script src="../js/home.js"></script>
+</body>
+</html>

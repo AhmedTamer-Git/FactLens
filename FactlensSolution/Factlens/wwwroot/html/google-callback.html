@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Google Callback</title>
+    <link rel="icon" href="../assets/favicon.png" type="image/png">
+    <script src="../js/shared.js"></script>
+    <script>
+        (async function () {
+            const params = new URLSearchParams(location.search);
+            const token = params.get("token");
+            if (!token) return;
+
+            try {
+                const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+                const payload = JSON.parse(atob(base64));
+
+                const email = payload.email || "";
+                const name = payload.name || email;
+
+                // ── احفظ التوكين والمستخدم
+                Auth.save(token, { email, fullName: name, username: name }, true);
+
+            } catch {
+                Auth.save(token, { email: "", fullName: "User", username: "User" }, true);
+            }
+
+            // ── امسح التوكين من URL
+            history.replaceState({}, "", location.pathname);
+
+            // ── انتظر ثانية صغيرة عشان localStorage يتثبت قبل fetch أي بيانات
+            await new Promise(r => setTimeout(r, 50));
+
+            // ── Redirect حسب الدور
+            const redirectUrl = Auth.isAdmin()
+                ? _rootPath() + "html/admin/dashboard.html"
+                : _rootPath() + "html/home.html";
+
+            window.location.href = redirectUrl;
+        })();
+    </script>
+    <link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body>
+    Redirecting…
+</body>
+</html>

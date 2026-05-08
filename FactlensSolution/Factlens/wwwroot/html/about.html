@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FactLens — About Us</title>
+    <link rel="stylesheet" href="../css/variables.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="icon" href="../assets/favicon.png" type="image/png">
+    <style>
+        /* ── Hero ── */
+        .about-hero {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+            color: var(--white);
+            text-align: center;
+            padding: 96px 24px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .about-hero::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(205,167,85,.20) 0%, transparent 60%);
+            }
+
+        .about-hero-inner {
+            position: relative;
+            z-index: 1;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .about-badge {
+            display: inline-block;
+            background: rgba(205,167,85,.18);
+            border: 1px solid rgba(205,167,85,.40);
+            color: var(--gold);
+            font-size: 13px;
+            font-weight: 600;
+            padding: 6px 18px;
+            border-radius: 50px;
+            margin-bottom: 24px;
+            letter-spacing: .04em;
+        }
+
+        .about-hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(36px, 5vw, 56px);
+            color: var(--white);
+            line-height: 1.15;
+            margin-bottom: 18px;
+        }
+
+            .about-hero h1 em {
+                color: var(--gold);
+                font-style: italic;
+            }
+
+        .about-hero p {
+            font-size: 17px;
+            color: rgba(255,255,255,.72);
+            line-height: 1.7;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        /* ── Mission ── */
+        .mission-section {
+            padding: 80px 24px;
+            background: var(--cream);
+        }
+
+        .mission-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center;
+        }
+
+        .mission-text h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            color: var(--navy);
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+            .mission-text h2 em {
+                color: var(--gold);
+                font-style: italic;
+            }
+
+        .mission-text p {
+            font-size: 16px;
+            color: var(--gray-500);
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .mission-visual {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .mission-stat {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 24px 28px;
+            border-left: 4px solid var(--gold);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .mission-stat-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 40px;
+            color: var(--navy);
+            line-height: 1;
+        }
+
+            .mission-stat-num span {
+                color: var(--gold);
+            }
+
+        .mission-stat-label {
+            font-size: 14px;
+            color: var(--gray-500);
+            margin-top: 4px;
+        }
+
+        /* ── How it works ── */
+        .how-section {
+            padding: 80px 24px;
+            background: rgba(205,167,85,.06);
+        }
+
+            .how-section .section-title {
+                text-align: center;
+                margin-bottom: 52px;
+            }
+
+                .how-section .section-title h2 {
+                    font-family: 'Playfair Display', serif;
+                    font-size: 36px;
+                    color: var(--navy);
+                    margin-bottom: 12px;
+                }
+
+                .how-section .section-title p {
+                    font-size: 16px;
+                    color: var(--gray-500);
+                }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .step-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 32px 24px;
+            text-align: center;
+            border: 1px solid rgba(205,167,85,.15);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+        }
+
+        .step-num {
+            width: 44px;
+            height: 44px;
+            background: var(--navy);
+            color: var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0 auto 16px;
+        }
+
+        .step-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .step-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            color: var(--navy);
+            margin-bottom: 10px;
+        }
+
+        .step-card p {
+            font-size: 14px;
+            color: var(--gray-500);
+            line-height: 1.6;
+        }
+
+        /* ── Values ── */
+        .values-section {
+            padding: 80px 24px;
+            background: var(--cream);
+        }
+
+            .values-section .section-title {
+                text-align: center;
+                margin-bottom: 52px;
+            }
+
+                .values-section .section-title h2 {
+                    font-family: 'Playfair Display', serif;
+                    font-size: 36px;
+                    color: var(--navy);
+                    margin-bottom: 12px;
+                }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .value-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 36px 28px;
+            border: 1px solid var(--gray-100);
+            box-shadow: var(--shadow-sm);
+            transition: transform .25s var(--ease), box-shadow .25s;
+        }
+
+            .value-card:hover {
+                transform: translateY(-4px);
+                box-shadow: var(--shadow-lg);
+            }
+
+        .value-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(205,167,85,.12);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+
+        .value-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            color: var(--navy);
+            margin-bottom: 10px;
+        }
+
+        .value-card p {
+            font-size: 15px;
+            color: var(--gray-500);
+            line-height: 1.7;
+        }
+
+        /* ── Team ── */
+        .team-section {
+            padding: 80px 24px;
+            background: rgba(205,167,85,.06);
+        }
+
+            .team-section .section-title {
+                text-align: center;
+                margin-bottom: 52px;
+            }
+
+                .team-section .section-title h2 {
+                    font-family: 'Playfair Display', serif;
+                    font-size: 36px;
+                    color: var(--navy);
+                    margin-bottom: 12px;
+                }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 أعمدة */
+            gap: 28px;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        /* 🟢 آخر كارت في الصف الأخير يروح للعمود الأوسط */
+        .team-card:nth-last-child(1) {
+            grid-column: 2 / 3;
+        }
+
+        .team-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 36px 24px;
+            text-align: center;
+            border: 1px solid var(--gray-100);
+            box-shadow: var(--shadow-sm);
+            transition: transform .25s var(--ease), box-shadow .25s;
+        }
+
+            .team-card:hover {
+                transform: translateY(-4px);
+                box-shadow: var(--shadow-lg);
+            }
+
+        .team-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--navy);
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0 auto 16px;
+        }
+
+        .team-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+
+        .team-role {
+            font-size: 13px;
+            color: var(--gold-dark);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .team-bio {
+            font-size: 14px;
+            color: var(--gray-500);
+            line-height: 1.6;
+        }
+
+        /* ── CTA ── */
+        .cta-section {
+            background: var(--navy);
+            padding: 80px 24px;
+            text-align: center;
+        }
+
+            .cta-section h2 {
+                font-family: 'Playfair Display', serif;
+                font-size: 36px;
+                color: var(--white);
+                margin-bottom: 16px;
+            }
+
+                .cta-section h2 em {
+                    color: var(--gold);
+                    font-style: italic;
+                }
+
+            .cta-section p {
+                font-size: 16px;
+                color: rgba(255,255,255,.65);
+                max-width: 480px;
+                margin: 0 auto 36px;
+                line-height: 1.7;
+            }
+
+        .cta-btns {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ── Responsive ── */
+
+        /* Tablet */
+        @media (max-width: 1024px) {
+            .steps-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .values-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .team-card:nth-last-child(1) {
+                grid-column: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .about-hero {
+                padding: 64px 16px 52px;
+            }
+
+                .about-hero p {
+                    font-size: 15px;
+                }
+
+            .mission-section {
+                padding: 52px 16px;
+            }
+
+            .mission-inner {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .mission-text h2 {
+                font-size: 28px;
+            }
+
+            .mission-stat {
+                padding: 18px 20px;
+            }
+
+            .mission-stat-num {
+                font-size: 32px;
+            }
+
+            .how-section {
+                padding: 52px 16px;
+            }
+
+            .steps-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .step-card {
+                padding: 24px 16px;
+            }
+
+            .values-section {
+                padding: 52px 16px;
+            }
+
+            .values-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .value-card {
+                padding: 28px 20px;
+            }
+
+            .team-section {
+                padding: 52px 16px;
+            }
+
+            .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .team-card {
+                padding: 28px 16px;
+            }
+
+                .team-card:nth-last-child(1) {
+                    grid-column: auto;
+                }
+
+            .cta-section {
+                padding: 52px 16px;
+            }
+
+                .cta-section h2 {
+                    font-size: 28px;
+                }
+
+            .cta-btns {
+                flex-direction: column;
+                align-items: center;
+            }
+
+                .cta-btns .btn-primary,
+                .cta-btns .btn-outline {
+                    width: 100%;
+                    max-width: 320px;
+                    justify-content: center;
+                }
+        }
+
+        @media (max-width: 480px) {
+            .about-hero {
+                padding: 48px 12px 40px;
+            }
+
+            .about-badge {
+                font-size: 12px;
+                padding: 5px 14px;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .step-card {
+                padding: 20px 16px;
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .team-card:nth-last-child(1) {
+                grid-column: auto;
+            }
+
+            .values-grid {
+                gap: 12px;
+            }
+
+            .mission-stat-num {
+                font-size: 28px;
+            }
+
+            .cta-btns .btn-primary,
+            .cta-btns .btn-outline {
+                max-width: 100%;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body>
+    <nav id="main-nav"></nav>
+
+    <!-- ── Hero ── -->
+    <section class="about-hero">
+        <div class="about-hero-inner">
+            <div class="about-badge">✦ Our Story</div>
+            <h1>Fighting <em>Misinformation</em><br />with AI</h1>
+            <p>FactLens was built on one belief: everyone deserves access to accurate, verifiable information. We harness AI to make truth-checking instant, transparent, and accessible.</p>
+        </div>
+    </section>
+
+    <!-- ── Mission ── -->
+    <section class="mission-section">
+        <div class="mission-inner">
+            <div class="mission-text">
+                <h2>Our <em>Mission</em></h2>
+                <p>In an era of rampant misinformation, FactLens provides a trusted, AI-powered platform that cross-references claims against thousands of credible sources — returning a clear, confidence-scored verdict within seconds.</p>
+                <p>We believe that informed citizens build stronger societies. Our mission is to lower the barrier to fact-checking so that anyone, anywhere can verify what they read before they share it.</p>
+                <a href="home.html" class="btn-primary" style="margin-top:8px;">Start Verifying News</a>
+            </div>
+            <div class="mission-visual">
+                <div class="mission-stat">
+                    <div class="mission-stat-num">10K<span>+</span></div>
+                    <div class="mission-stat-label">News articles analyzed</div>
+                </div>
+                <div class="mission-stat" style="border-left-color:#22c55e;">
+                    <div class="mission-stat-num" style="color:#22c55e;">95<span style="color:#22c55e;">%</span></div>
+                    <div class="mission-stat-label">AI confidence accuracy rate</div>
+                </div>
+                <div class="mission-stat" style="border-left-color:#8b5cf6;">
+                    <div class="mission-stat-num" style="color:#8b5cf6;">50<span style="color:#8b5cf6;">+</span></div>
+                    <div class="mission-stat-label">Trusted source databases</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── How it works ── -->
+    <section class="how-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>How FactLens Works</h2>
+                <p>From raw text to verified verdict in four simple steps</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-num">1</div>
+                    <div class="step-icon">📋</div>
+                    <h3>Paste the Claim</h3>
+                    <p>Copy any news headline, article excerpt, or social media claim and paste it into FactLens.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">2</div>
+                    <div class="step-icon">🤖</div>
+                    <h3>AI Analysis</h3>
+                    <p>Our model breaks down the claim, identifies key assertions, and searches relevant sources.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">3</div>
+                    <div class="step-icon">🔍</div>
+                    <h3>Source Cross-Check</h3>
+                    <p>The AI cross-references against a curated database of trusted news outlets and fact-checkers.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">4</div>
+                    <div class="step-icon">📊</div>
+                    <h3>Credibility Verdict</h3>
+                    <p>Receive a scored verdict — Verified True, Misleading, False, or Unverifiable — with full explanation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Values ── -->
+    <section class="values-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Core Values</h2>
+                <p>The principles that guide every decision we make</p>
+            </div>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">🎯</div>
+                    <h3>Accuracy First</h3>
+                    <p>We obsess over accuracy. Every verdict is backed by evidence, and we continuously improve our model to reduce false positives.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🔓</div>
+                    <h3>Transparency</h3>
+                    <p>We always show our work. You can see the exact sources cited, the explanation behind the verdict, and the confidence level.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">⚖️</div>
+                    <h3>Political Neutrality</h3>
+                    <p>FactLens has no political agenda. We evaluate claims on factual merit alone, regardless of who made them or what they support.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🌍</div>
+                    <h3>Accessibility</h3>
+                    <p>Fact-checking should be available to everyone. We support Arabic and English content with plans to expand further.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🔒</div>
+                    <h3>Privacy</h3>
+                    <p>Your queries are yours. We do not sell your data, track your reading habits, or share your history with third parties.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🚀</div>
+                    <h3>Continuous Improvement</h3>
+                    <p>We treat every piece of user feedback as an opportunity to learn, refine, and deliver better verdicts over time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Team ── -->
+    <section class="team-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>The Team Behind FactLens</h2>
+                <p>Passionate about truth, technology, and impact</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-avatar">A</div>
+                    <div class="team-name">Ahmed Tamer</div>
+                    <div class="team-role">Founder & Full Stack Engineer</div>
+                    <div class="team-bio">Originator of the idea, worked on backend, integrated frontend, and contributed to the model.</div>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">A</div>
+                    <div class="team-name">Abdelrahman Ragab</div>
+                    <div class="team-role">AI/Model Engineer</div>
+                    <div class="team-bio">Worked on the AI model, specializing in LLM integration and fact-checking algorithms.</div>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">M</div>
+                    <div class="team-name">Mostafa Abd Elstar</div>
+                    <div class="team-role">AI/Model Engineer</div>
+                    <div class="team-bio">Contributed to the model's architecture and optimization for accurate fact verification.</div>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">A</div>
+                    <div class="team-name">Ahmed Osama</div>
+                    <div class="team-role">Backend Engineer</div>
+                    <div class="team-bio">Focused on backend development, ensuring the API infrastructure is robust and scalable.</div>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">M</div>
+                    <div class="team-name">Mahmoud Reda</div>
+                    <div class="team-role">Frontend/UI-UX Engineer</div>
+                    <div class="team-bio">Focused on frontend development to ensure a seamless and intuitive user experience.</div>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">A</div>
+                    <div class="team-name">Abdelhamid Ahmed</div>
+                    <div class="team-role">Frontend Engineer</div>
+                    <div class="team-bio">Worked on the user interface, making fact-checking accessible and visually appealing.</div>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">A</div>
+                    <div class="team-name">Amr Kandil</div>
+                    <div class="team-role">Frontend Engineer</div>
+                    <div class="team-bio">Contributed to frontend features and overall usability of the FactLens platform.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── CTA ── -->
+    <section class="cta-section">
+        <h2>Ready to <em>Stop Misinformation</em>?</h2>
+        <p>Join thousands of users who verify news before they share it. It only takes seconds.</p>
+        <div class="cta-btns">
+            <a href="home.html" class="btn-primary" style="font-size:16px;padding:14px 32px;">⬡ Start Fact-Checking</a>
+            <a href="sign_up.html" class="btn-outline" style="font-size:16px;padding:14px 32px;color:var(--white);border-color:rgba(255,255,255,.4);">Create Free Account</a>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="footer-inner">
+            <div>
+                <div class="footer-brand-name">Fact<strong>Lens</strong></div>
+                <p class="footer-desc">Empowering users to verify news credibility with advanced AI technology.</p>
+            </div>
+            <div>
+                <div class="footer-heading">Navigation</div>
+                <div class="footer-links">
+                    <a href="home.html">Home</a>
+                    <a href="history.html">History</a>
+                    <a href="News-Feed.html">News Feed</a>
+                    <a href="about.html">About Us</a>
+                </div>
+            </div>
+            <div>
+                <div class="footer-heading">Legal</div>
+                <div class="footer-links"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div>
+            </div>
+        </div>
+        <div class="footer-bottom">FactLens © 2025 — Powered by AI</div>
+    </footer>
+
+    <script src="../js/shared.js"></script>
+    <script>renderNav("about");</script>
+</body>
+</html>

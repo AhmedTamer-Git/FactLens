@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FactLens — Analysis History</title>
+    <link rel="stylesheet" href="../css/variables.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/history.css" />
+    <link rel="stylesheet" href="../css/responsive.css" />
+    <link rel="icon" href="../assets/favicon.png" type="image/png">
+</head>
+<body>
+    <nav id="main-nav"></nav>
+
+    <div class="container">
+        <div class="page-hero">
+            <h1>Analysis <em>History</em></h1>
+            <p>Review and manage your past news credibility analyses</p>
+        </div>
+
+        <!-- Search + Filters -->
+        <div class="history-toolbar">
+            <div class="search-wrap">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" class="input-field" placeholder="Search your history…" />
+            </div>
+            <div class="filter-group">
+                <select id="verdictFilter" class="input-field" style="width:auto;min-width:140px;">
+                    <option value="">All Verdicts</option>
+                    <option value="True">✅ Verified True</option>
+                    <option value="Misleading">⚠️ Misleading</option>
+                    <option value="False">❌ False</option>
+                    <option value="Unverified">❓ Unverified</option>
+                </select>
+                <button id="clearAllBtn" class="btn-danger">🗑 Clear All</button>
+            </div>
+        </div>
+
+        <!-- History list -->
+        <div id="historyList">
+            <div class="loading-center"><div class="spinner"></div><span>Loading history…</span></div>
+        </div>
+
+        <!-- Pagination -->
+        <div id="pagination" class="pagination"></div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="footer-inner">
+            <div><div class="footer-brand-name">Fact<strong>Lens</strong></div></div>
+            <div>
+                <div class="footer-heading">Navigation</div>
+                <div class="footer-links"><a href="home.html">Home</a><a href="history.html">History</a></div>
+            </div>
+            <div>
+                <div class="footer-heading">Legal</div>
+                <div class="footer-links"><a href="#">Privacy</a><a href="#">Terms</a></div>
+            </div>
+        </div>
+        <div class="footer-bottom">FactLens © 2025</div>
+    </footer>
+
+    <script src="../js/shared.js"></script>
+    <script src="../js/history.js"></script>
+</body>
+</html>

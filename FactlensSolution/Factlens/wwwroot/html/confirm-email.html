@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FactLens — Confirm Email</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" />
+    <link rel="icon" href="../assets/favicon.png" type="image/png">
+    <style>
+        :root {
+            --navy: #1A305B;
+            --navy-light: #243f73;
+            --gold: #CDA755;
+            --gold-dark: #a8883e;
+            --cream: #FAF9F6;
+            --white: #FFFFFF;
+            --gray-100: #F1F3F5;
+            --gray-200: #E9ECEF;
+            --gray-400: #9CA3AF;
+            --gray-500: #78808A;
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-xl: 32px;
+            --shadow-lg: 0 10px 40px rgba(0,0,0,.14);
+            --shadow-gold: 0 4px 20px rgba(205,167,85,.30);
+            --ease: cubic-bezier(.4,0,.2,1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--cream);
+            background-image: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(205,167,85,.18) 0%, transparent 60%), radial-gradient(ellipse 40% 40% at 85% 80%, rgba(26,48,91,.07) 0%, transparent 60%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ── Brand ── */
+        .brand-link {
+            position: fixed;
+            top: 20px;
+            left: 28px;
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color .2s;
+            z-index: 10;
+        }
+
+            .brand-link:hover {
+                color: var(--gold);
+            }
+
+            .brand-link .hex {
+                font-size: 24px;
+                color: var(--gold);
+            }
+
+            .brand-link strong {
+                color: var(--gold);
+            }
+
+        /* ── Card ── */
+        .card {
+            width: 100%;
+            max-width: 460px;
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg), 0 0 0 1px rgba(205,167,85,.10);
+            padding: 52px 40px 44px;
+            text-align: center;
+            animation: cardIn .5s var(--ease) both;
+        }
+
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ── States ── */
+        .state {
+            display: none;
+        }
+
+            .state.active {
+                display: block;
+            }
+
+        /* ── Icon circle ── */
+        .icon-wrap {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 28px;
+            animation: iconPop .5s .1s var(--ease) both;
+        }
+
+        @keyframes iconPop {
+            0% {
+                transform: scale(.5);
+                opacity: 0;
+            }
+
+            70% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .icon-wrap.loading {
+            background: rgba(205,167,85,.12);
+            border: 2px dashed rgba(205,167,85,.4);
+        }
+
+        .icon-wrap.success {
+            background: rgba(34,197,94,.12);
+            box-shadow: 0 8px 28px rgba(34,197,94,.18);
+        }
+
+        .icon-wrap.error {
+            background: rgba(239,68,68,.10);
+            box-shadow: 0 8px 28px rgba(239,68,68,.15);
+        }
+
+        /* Spinner */
+        .spinner {
+            width: 44px;
+            height: 44px;
+            border: 3px solid rgba(205,167,85,.25);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin .8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ── Text ── */
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            color: var(--navy);
+            margin-bottom: 10px;
+            line-height: 1.25;
+        }
+
+            .card-title em {
+                color: var(--gold);
+                font-style: italic;
+            }
+
+        .card-text {
+            font-size: 15px;
+            color: var(--gray-500);
+            line-height: 1.75;
+            margin-bottom: 32px;
+        }
+
+        .error-text {
+            font-size: 14px;
+            color: #ef4444;
+            margin-bottom: 28px;
+            line-height: 1.6;
+            padding: 12px 16px;
+            background: rgba(239,68,68,.06);
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(239,68,68,.15);
+        }
+
+        /* ── Countdown bar ── */
+        .countdown-wrap {
+            margin-bottom: 28px;
+        }
+
+        .countdown-text {
+            font-size: 13px;
+            color: var(--gray-400);
+            margin-bottom: 8px;
+        }
+
+        .countdown-bar-bg {
+            height: 4px;
+            background: var(--gray-200);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .countdown-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold), #22c55e);
+            border-radius: 2px;
+            width: 100%;
+            transition: width 1s linear;
+        }
+
+        /* ── Button ── */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 14px 24px;
+            background: var(--gold);
+            color: var(--navy);
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background .2s, transform .2s, box-shadow .2s;
+            box-shadow: var(--shadow-gold);
+        }
+
+            .btn-primary:hover {
+                background: var(--gold-dark);
+                transform: translateY(-2px);
+                box-shadow: 0 8px 28px rgba(205,167,85,.38);
+            }
+
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px 24px;
+            background: transparent;
+            color: var(--navy);
+            border: 2px solid var(--navy);
+            border-radius: var(--radius-sm);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all .2s;
+        }
+
+            .btn-outline:hover {
+                background: var(--navy);
+                color: var(--gold);
+            }
+
+        .btn-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 520px) {
+            .brand-link {
+                position: relative;
+                top: auto;
+                left: auto;
+                margin-bottom: 28px;
+            }
+
+            body {
+                justify-content: flex-start;
+                padding-top: 24px;
+            }
+
+            .card {
+                padding: 32px 22px 28px;
+                border-radius: 20px;
+            }
+
+            .card-title {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="home.html" class="brand-link">
+        <span class="hex">⬡</span>
+        Fact<strong>Lens</strong>
+    </a>
+
+    <div class="card">
+
+        <!-- ── Loading State ── -->
+        <div id="stateLoading" class="state active">
+            <div class="icon-wrap loading">
+                <div class="spinner"></div>
+            </div>
+            <h2 class="card-title">Confirming your <em>Email</em>…</h2>
+            <p class="card-text">Please wait a moment while we verify your account.</p>
+        </div>
+
+        <!-- ── Success State ── -->
+        <div id="stateSuccess" class="state">
+            <div class="icon-wrap success">
+                <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+                    <circle cx="22" cy="22" r="22" fill="rgba(34,197,94,.15)" />
+                    <path d="M12 22l7 7 13-14" stroke="#22c55e" stroke-width="2.8"
+                          stroke-linecap="round" stroke-linejoin="round"
+                          stroke-dasharray="30" stroke-dashoffset="30"
+                          style="animation: drawCheck .5s .2s forwards ease-out">
+                    </path>
+                </svg>
+            </div>
+            <h1 class="card-title">Email <em>Confirmed!</em></h1>
+            <p class="card-text">
+                Your account is now active.<br />
+                You'll be redirected to Sign In automatically.
+            </p>
+            <div class="countdown-wrap">
+                <p class="countdown-text">Redirecting in <span id="countNum">3</span>s…</p>
+                <div class="countdown-bar-bg">
+                    <div class="countdown-bar" id="countBar"></div>
+                </div>
+            </div>
+            <a href="login.html" class="btn-primary">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2.5"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                    <polyline points="10 17 15 12 10 7" />
+                    <line x1="15" y1="12" x2="3" y2="12" />
+                </svg>
+                Go to Sign In Now
+            </a>
+        </div>
+
+        <!-- ── Error State ── -->
+        <div id="stateError" class="state">
+            <div class="icon-wrap error">
+                <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+                    <circle cx="22" cy="22" r="22" fill="rgba(239,68,68,.12)" />
+                    <path d="M15 15l14 14M29 15L15 29" stroke="#ef4444" stroke-width="2.8"
+                          stroke-linecap="round" />
+                </svg>
+            </div>
+            <h1 class="card-title">Confirmation <em style="color:#ef4444">Failed</em></h1>
+            <p id="errorText" class="error-text">Something went wrong. The link may have expired.</p>
+            <div class="btn-stack">
+                <a href="sign_up.html" class="btn-primary">
+                    Register Again
+                </a>
+                <a href="login.html" class="btn-outline">
+                    Back to Sign In
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="../js/shared.js"></script>
+    <script>
+        // ── Helper: show one state, hide others ──
+        function showState(id) {
+            ["stateLoading", "stateSuccess", "stateError"].forEach(function (s) {
+                document.getElementById(s).classList.toggle("active", s === id);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", async function () {
+            var params = new URLSearchParams(location.search);
+            var userId = params.get("userId");
+            var token = params.get("token");
+
+            // امسح الـ params من الـ URL فور ما نأخد قيمهم عشان نتجنب أي تداخل
+            history.replaceState({}, "", location.pathname);
+
+            // ── Validate params ──
+            if (!userId || !token) {
+                showState("stateError");
+                document.getElementById("errorText").textContent =
+                    "Invalid confirmation link. Please register again.";
+                return;
+            }
+
+            try {
+                // ── Call API ──
+                // الـ token جاي Base64Url من الـ Backend
+                // encodeURIComponent بيحمي الـ special chars (+, =, /) في الـ query string
+                var res = await fetch(
+                    BASE_URL + "/api/auth/confirm-email"
+                    + "?userId=" + encodeURIComponent(userId)
+                    + "&token=" + encodeURIComponent(token)
+                );
+
+                if (res.ok) {
+                    showState("stateSuccess");
+                    startCountdown(10);
+                } else {
+                    // Backend بيرجع plain text error
+                    var msg = await res.text().catch(function () { return ""; });
+                    showState("stateError");
+                    document.getElementById("errorText").textContent =
+                        msg || "Email confirmation failed. The link may have expired.";
+                }
+
+            } catch (err) {
+                showState("stateError");
+                document.getElementById("errorText").textContent =
+                    "Network error: " + err.message;
+            }
+        });
+
+        // ── Countdown + redirect ──
+        function startCountdown(seconds) {
+            var bar = document.getElementById("countBar");
+            var numEl = document.getElementById("countNum");
+            var left = seconds;
+
+            // Shrink bar over `seconds` seconds
+            requestAnimationFrame(function () {
+                bar.style.width = "0%";
+            });
+
+            var interval = setInterval(function () {
+                left--;
+                numEl.textContent = left;
+                if (left <= 0) {
+                    clearInterval(interval);
+                    // امسح الـ URL params قبل الـ redirect عشان shared.js Google handler ميشتغلش
+                    window.location.replace("login.html");
+                }
+            }, 1000);
+        }
+    </script>
+
+    <style>
+        @keyframes drawCheck {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+    </style>
+</body>
+</html>

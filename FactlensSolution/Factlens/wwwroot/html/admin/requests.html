@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FactLens Admin — AI Requests</title>
+    <link rel="stylesheet" href="../../css/variables.css" />
+    <link rel="stylesheet" href="../../css/components.css" />
+    <link rel="stylesheet" href="../../css/admin.css" />
+    <link rel="stylesheet" href="../../css/responsive.css" />
+    <link rel="icon" href="../../assets/favicon.png" type="image/png">
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">Fact<strong>Lens</strong> <span class="sidebar-badge">Admin</span></div>
+            <nav class="sidebar-nav">
+                <a class="sidebar-link" href="dashboard.html"><span class="link-icon">📊</span> Dashboard</a>
+                <a class="sidebar-link active" href="requests.html"><span class="link-icon">📋</span> AI Requests</a>
+                <a class="sidebar-link" href="verdicts.html"><span class="link-icon">🔬</span> Verdicts</a>
+                <a class="sidebar-link" href="feedback.html"><span class="link-icon">💬</span> Feedback</a>
+                <a class="sidebar-link" href="../home.html"><span class="link-icon">🏠</span> Back to Site</a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="sidebar-user" id="sidebarUser">—</div>
+                <button class="sidebar-logout" onclick="Auth.logout()">Sign Out</button>
+            </div>
+        </aside>
+
+        <main class="admin-main">
+            <div class="admin-topbar">
+                <h2>AI Request Logs</h2>
+            </div>
+            <div class="admin-content">
+                <div class="admin-filters">
+                    <input type="text" id="searchInput" placeholder="Search by text, user, verdict…" style="flex:1;min-width:200px;" />
+                    <select id="statusFilter">
+                        <option value="">All Status</option>
+                        <option value="200">200 OK</option>
+                        <option value="400">400 Bad Request</option>
+                        <option value="500">500 Error</option>
+                    </select>
+                </div>
+
+                <div class="admin-section">
+                    <div class="admin-section-body">
+                        <div class="admin-table-wrap">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr><th>ID</th><th>User ID</th><th>Input</th><th>Verdict</th><th>Score</th><th>Status</th><th>Duration</th><th>Error</th><th>Time</th></tr>
+                                </thead>
+                                <tbody id="requestsTable"><tr><td colspan="9" style="text-align:center;padding:40px;">Loading…</td></tr></tbody>
+                            </table>
+                        </div>
+                        <div id="pagination" class="pagination" style="margin-top:20px;"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../js/shared.js"></script>
+    <script src="../../js/admin/requests.js"></script>
+    <script src="../../js/admin/admin-responsive.js"></script>
+</body>
+</html>

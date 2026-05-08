@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FactLens Admin — Verdicts</title>
+    <link rel="stylesheet" href="../../css/variables.css" />
+    <link rel="stylesheet" href="../../css/components.css" />
+    <link rel="stylesheet" href="../../css/admin.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="../../css/responsive.css" />
+    <link rel="icon" href="../../assets/favicon.png" type="image/png">
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">Fact<strong>Lens</strong> <span class="sidebar-badge">Admin</span></div>
+            <nav class="sidebar-nav">
+                <a class="sidebar-link" href="dashboard.html"><span class="link-icon">📊</span> Dashboard</a>
+                <a class="sidebar-link" href="requests.html"><span class="link-icon">📋</span> AI Requests</a>
+                <a class="sidebar-link active" href="verdicts.html"><span class="link-icon">🔬</span> Verdicts</a>
+                <a class="sidebar-link" href="feedback.html"><span class="link-icon">💬</span> Feedback</a>
+                <a class="sidebar-link" href="../home.html"><span class="link-icon">🏠</span> Back to Site</a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="sidebar-user" id="sidebarUser">—</div>
+                <button class="sidebar-logout" onclick="Auth.logout()">Sign Out</button>
+            </div>
+        </aside>
+
+        <main class="admin-main">
+            <div class="admin-topbar"><h2>Verdict Analytics (Last 30 Days)</h2></div>
+            <div class="admin-content">
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;">
+                    <div class="admin-section">
+                        <div class="admin-section-header"><h3>Distribution (Doughnut)</h3></div>
+                        <div class="admin-section-body">
+                            <div class="chart-wrap"><canvas id="donutChart" height="280"></canvas></div>
+                        </div>
+                    </div>
+                    <div class="admin-section">
+                        <div class="admin-section-header"><h3>Counts (Bar)</h3></div>
+                        <div class="admin-section-body">
+                            <canvas id="barChart" height="280"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-section">
+                    <div class="admin-section-header"><h3>Breakdown Table</h3></div>
+                    <div class="admin-section-body">
+                        <table class="admin-table">
+                            <thead>
+                                <tr><th>Verdict</th><th>Count</th><th>Share</th></tr>
+                            </thead>
+                            <tbody id="verdictTable">
+                                <tr><td colspan="3" style="text-align:center;padding:40px;">Loading…</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../js/shared.js"></script>
+    <script>
+        // ✅ GET /api/admin/verdicts — returns [{verdict, count}] for last 30 days
+        document.addEventListener("DOMContentLoaded", async function () {
+            if (!requireAdmin()) return;
+
+            var user = Auth.getUser();
+            var sidebarUser = document.getElementById("sidebarUser");
+            if (sidebarUser) sidebarUser.textContent = (user && (user.fullName || user.username)) || "Admin";
+
+            var COLORS = {
+                "True": "#22c55e",
+                "Misleading": "#f59e0b",
+                "False": "#ef4444",
+                "Unverified": "#9ca3af"
+            };
+
+            try {
+                var res = await apiFetch("/api/admin/verdicts");
+                if (!res.ok) throw new Error("HTTP " + res.status);
+                var data = await res.json();
+
+                if (!data.length) {
+                    document.getElementById("verdictTable").innerHTML =
+                        '<tr><td colspan="3" style="text-align:center;padding:40px;color:var(--gray-400);">No verdict data for last 30 days.</td></tr>';
+                    return;
+                }
+
+                var total = data.reduce(function (s, d) { return s + d.count; }, 0);
+                var labels = data.map(function (d) { return d.verdict; });
+                var counts = data.map(function (d) { return d.count; });
+                var colors = data.map(function (d) { return COLORS[d.verdict] || "#6b7280"; });
+
+                // Doughnut chart
+                new Chart(document.getElementById("donutChart"), {
+                    type: "doughnut",
+                    data: {
+                        labels: labels,
+                        datasets: [{ data: counts, backgroundColor: colors, borderWidth: 3, borderColor: "#fff" }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { position: "bottom", labels: { font: { family: "'DM Sans', sans-serif", size: 13 }, padding: 16 } },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (ctx) {
+                                        var pct = total > 0 ? ((ctx.parsed / total) * 100).toFixed(1) : 0;
+                                        return " " + ctx.label + ": " + ctx.parsed + " requests (" + pct + "%)";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // Bar chart
+                new Chart(document.getElementById("barChart"), {
+                    type: "bar",
+                    data: {
+                        labels: labels,
+                        datasets: [{ label: "Requests", data: counts, backgroundColor: colors, borderRadius: 6 }]
+                    },
+                    options: {
+                        responsive: true,
+                        indexAxis: "y",
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (ctx) {
+                                        var pct = total > 0 ? ((ctx.parsed.x / total) * 100).toFixed(1) : 0;
+                                        return " " + ctx.parsed.x + " requests (" + pct + "%)";
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: { beginAtZero: true, ticks: { stepSize: 1, precision: 0 }, grid: { color: "rgba(0,0,0,.05)" } },
+                            y: { ticks: { font: { family: "'DM Sans', sans-serif", size: 13 } } }
+                        }
+                    }
+                });
+
+                // Table
+                document.getElementById("verdictTable").innerHTML = data.map(function (d) {
+                    var cfg = getVerdictConfig(d.verdict);
+                    var pct = total > 0 ? ((d.count / total) * 100).toFixed(1) : 0;
+                    return "<tr>"
+                        + '<td><span class="verdict-pill" style="background:' + cfg.bg + ';color:' + cfg.color + ';font-size:13px;">'
+                        + cfg.icon + " " + d.verdict + "</span></td>"
+                        + "<td><strong>" + d.count + "</strong></td>"
+                        + "<td><div style='display:flex;align-items:center;gap:10px;'>"
+                        + "<div style='flex:1;background:var(--gray-200);border-radius:4px;height:8px;'>"
+                        + "<div style='width:" + pct + "%;background:" + cfg.color + ";height:8px;border-radius:4px;'></div></div>"
+                        + "<span style='font-size:13px;color:var(--gray-500);min-width:40px;'>" + pct + "%</span>"
+                        + "</div></td>"
+                        + "</tr>";
+                }).join("");
+
+            } catch (err) {
+                document.getElementById("verdictTable").innerHTML =
+                    '<tr><td colspan="3" style="text-align:center;color:#ef4444;padding:40px;">Failed to load: ' + err.message + '</td></tr>';
+            }
+        });
+    </script>
+    <script src="../../js/admin/admin-responsive.js"></script>
+</body>
+</html>

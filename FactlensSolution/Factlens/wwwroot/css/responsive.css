@@ -1,0 +1,893 @@
+﻿/* ============================================================
+   FACTLENS — Responsive Stylesheet
+   Breakpoints:
+     Mobile  S : max 480px
+     Mobile  L : max 640px
+     Tablet    : max 768px
+     Tablet  L : max 1024px
+   ============================================================ */
+
+/* ══════════════════════════════════════════════════════════
+   1. NAV — Hamburger menu for mobile / tablet
+   ══════════════════════════════════════════════════════════ */
+
+/* Hamburger button — hidden on desktop */
+.nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+    .nav-hamburger span {
+        display: block;
+        height: 2px;
+        width: 100%;
+        background: var(--navy);
+        border-radius: 2px;
+        transition: all .3s var(--ease);
+    }
+
+    .nav-hamburger.open span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+
+    .nav-hamburger.open span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .nav-hamburger.open span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+
+/* Mobile nav drawer */
+.nav-drawer {
+    /* Fixed to full viewport — OUTSIDE sticky nav stacking context */
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(26,48,91,.45);
+    backdrop-filter: blur(4px);
+    /* Animate with visibility+opacity so slide transition works */
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .3s var(--ease), visibility .3s;
+    pointer-events: none;
+}
+
+    .nav-drawer.open {
+        visibility: visible;
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+.nav-drawer-inner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: min(320px, 85vw);
+    height: 100%;
+    background: var(--white);
+    box-shadow: -8px 0 40px rgba(0,0,0,.2);
+    display: flex;
+    flex-direction: column;
+    padding: 24px 20px;
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform .3s var(--ease);
+}
+
+.nav-drawer.open .nav-drawer-inner {
+    transform: translateX(0);
+}
+
+.nav-drawer-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--navy);
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--gray-100);
+}
+
+    .nav-drawer-brand strong {
+        color: var(--gold);
+    }
+
+.nav-drawer-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: var(--gray-100);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .2s;
+}
+
+    .nav-drawer-close:hover {
+        background: var(--gray-200);
+    }
+
+.nav-drawer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+    .nav-drawer-links a {
+        padding: 13px 16px;
+        border-radius: var(--radius-sm);
+        font-size: 16px;
+        font-weight: 500;
+        color: var(--gray-700);
+        transition: all .2s;
+        display: block;
+    }
+
+        .nav-drawer-links a:hover,
+        .nav-drawer-links a.active {
+            color: var(--navy);
+            background: rgba(205,167,85,.14);
+            font-weight: 600;
+        }
+
+        .nav-drawer-links a.nav-admin-link {
+            color: var(--gold-dark);
+        }
+
+.nav-drawer-actions {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--gray-100);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+    .nav-drawer-actions .nav-btn {
+        width: 100%;
+        text-align: center;
+        padding: 13px;
+        font-size: 15px;
+    }
+
+.nav-drawer-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--gray-50);
+    border-radius: var(--radius-md);
+    margin-top: 16px;
+}
+
+.nav-drawer-username {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--navy);
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   2. FOOTER
+   ══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    footer.main-footer {
+        padding: 40px 20px 20px;
+        margin-top: 48px;
+    }
+
+    .footer-inner {
+        grid-template-columns: 1fr;
+        gap: 28px;
+        margin-bottom: 24px;
+    }
+
+    .footer-desc {
+        max-width: 100%;
+    }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   3. HOME PAGE
+   ══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .hero {
+        min-height: auto;
+        padding: 48px 16px 40px;
+    }
+
+    .hero-content h1 {
+        font-size: clamp(30px, 7vw, 40px);
+    }
+
+    .hero-content > p {
+        font-size: 15px;
+    }
+
+    .analyze-box {
+        padding: 20px 16px;
+    }
+
+        .analyze-box textarea {
+            font-size: 15px;
+            padding: 14px 16px;
+        }
+
+    .analyze-actions {
+        flex-direction: column;
+    }
+
+    .analyze-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 14px;
+    }
+
+    .btn-outline {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .features-section {
+        padding: 48px 16px;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .feature-card {
+        padding: 24px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        padding: 36px 12px 32px;
+    }
+
+    .hero-badge {
+        font-size: 12px;
+        padding: 5px 12px;
+    }
+
+    .analyze-box {
+        border-radius: var(--radius-lg);
+    }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   4. RESULT PAGE
+   ══════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+    .score-card {
+        gap: 32px;
+        padding: 32px 36px;
+    }
+}
+
+@media (max-width: 768px) {
+    .score-card {
+        flex-direction: column;
+        align-items: center;
+        padding: 24px 20px;
+        text-align: center;
+    }
+
+    .score-visual svg {
+        width: 180px;
+        height: 180px;
+    }
+
+    .circle-label span {
+        font-size: 40px;
+    }
+
+    .verdict-lg {
+        font-size: 14px;
+    }
+
+    .result-actions {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+        .result-actions .btn-primary,
+        .result-actions .btn-outline {
+            flex: 1;
+            min-width: 140px;
+            justify-content: center;
+        }
+
+    .tabs-bar {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .tab-btn {
+        flex: 1;
+        min-width: 100px;
+        font-size: 13px;
+        padding: 10px 8px;
+    }
+
+    .tab-panel {
+        padding: 20px 16px;
+    }
+
+    .share-box {
+        padding: 16px;
+    }
+
+    .share-url-row {
+        flex-direction: column;
+    }
+
+        .share-url-row input {
+            width: 100%;
+        }
+
+        .share-url-row button {
+            width: 100%;
+            padding: 12px;
+        }
+
+    .helpful-btns {
+        flex-direction: column;
+    }
+
+    .helpful-btn {
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .score-visual svg {
+        width: 160px;
+        height: 160px;
+    }
+
+    .circle-label span {
+        font-size: 36px;
+    }
+
+    .tabs-bar {
+        gap: 4px;
+        padding: 4px;
+    }
+
+    .tab-btn {
+        font-size: 12px;
+        padding: 9px 6px;
+    }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   5. HISTORY PAGE
+   ══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .history-toolbar {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .search-wrap {
+        min-width: unset;
+        width: 100%;
+    }
+
+    .filter-group {
+        width: 100%;
+    }
+
+        .filter-group select {
+            flex: 1;
+        }
+
+        .filter-group .btn-danger {
+            white-space: nowrap;
+        }
+
+    .history-card {
+        padding: 18px 16px;
+        gap: 16px;
+    }
+
+    .hist-circle {
+        width: 76px;
+        height: 76px;
+    }
+
+    .hist-inner {
+        width: 58px;
+        height: 58px;
+    }
+
+    .hist-score {
+        font-size: 17px;
+    }
+
+    .hist-title {
+        font-size: 14px;
+    }
+
+    .hist-actions {
+        flex-direction: row;
+        width: 100%;
+    }
+
+    .hist-view-btn {
+        flex: 1;
+        justify-content: center;
+        font-size: 13px;
+        padding: 9px 12px;
+    }
+
+    .hist-del-btn {
+        font-size: 12px;
+        padding: 9px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .history-card {
+        flex-direction: column;
+    }
+
+    .hist-circle {
+        align-self: center;
+    }
+
+    .hist-title {
+        -webkit-line-clamp: 3;
+    }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   6. AUTH PAGES (Login / Sign Up / Reset)
+   ══════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+    .auth-body {
+        padding: 56px 12px 32px;
+    }
+
+    .auth-card {
+        padding: 28px 20px;
+        border-radius: var(--radius-lg);
+    }
+
+    .auth-header h1 {
+        font-size: 24px;
+    }
+
+    .auth-back-home {
+        top: 14px;
+        left: 16px;
+        font-size: 17px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+
+    .btn-google {
+        font-size: 13px;
+        padding: 11px;
+    }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   7. ADMIN PAGES
+   ══════════════════════════════════════════════════════════ */
+
+/* Sidebar → off-canvas on tablet/mobile */
+@media (max-width: 1024px) {
+    .admin-sidebar {
+        position: fixed;
+        left: -240px;
+        top: 0;
+        z-index: 200;
+        height: 100vh;
+        transition: left .3s var(--ease);
+        box-shadow: none;
+    }
+
+        .admin-sidebar.open {
+            left: 0;
+            box-shadow: 8px 0 40px rgba(0,0,0,.2);
+        }
+
+    .admin-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.4);
+        z-index: 199;
+    }
+
+        .admin-overlay.open {
+            display: block;
+        }
+
+    .admin-main {
+        width: 100%;
+    }
+
+    .admin-topbar {
+        padding: 14px 20px;
+    }
+
+    /* Hamburger for admin sidebar */
+    .admin-menu-btn {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        background: var(--gray-100);
+        border: none;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        font-size: 18px;
+        color: var(--navy);
+        transition: background .2s;
+    }
+
+        .admin-menu-btn:hover {
+            background: var(--gray-200);
+        }
+}
+
+@media (max-width: 768px) {
+    .admin-content {
+        padding: 20px 16px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .stat-card {
+        padding: 18px 16px;
+    }
+
+    .stat-value {
+        font-size: 28px;
+    }
+
+    /* Charts row → single column */
+    .admin-content > div[style*="grid-template-columns:1fr 1fr"] {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .admin-filters {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+        .admin-filters input,
+        .admin-filters select {
+            width: 100%;
+            min-width: unset;
+        }
+
+    .admin-table {
+        font-size: 13px;
+    }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 10px 10px;
+        }
+
+    /* Horizontal scroll wrapper already exists (.admin-table-wrap) — just ensure min-width */
+    .admin-table {
+        min-width: 600px;
+    }
+
+    .admin-section-header {
+        padding: 16px 18px;
+    }
+
+    .admin-section-body {
+        padding: 16px 18px;
+    }
+
+    .admin-topbar h2 {
+        font-size: 17px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-card {
+        padding: 16px;
+    }
+}
+
+/* Admin menu button — hidden on desktop */
+.admin-menu-btn {
+    display: none;
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   8. NEWS FEED PAGE
+   ══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .news-hero {
+        padding: 40px 16px 28px;
+    }
+
+    .news-toolbar {
+        padding: 0 16px;
+    }
+
+    .source-tabs {
+        padding: 0 16px;
+        gap: 6px;
+    }
+
+    .src-tab {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .news-grid {
+        padding: 0 16px;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .news-grid {
+        grid-template-columns: 1fr;
+        padding: 0 16px;
+    }
+
+    .news-card-body {
+        padding: 16px 18px;
+    }
+
+    .news-card-title {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .news-grid {
+        grid-template-columns: 1fr;
+        padding: 0 12px;
+    }
+
+    .news-card-img, .news-card-img-placeholder {
+        height: 170px;
+    }
+
+    .news-card-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .news-card-actions {
+        width: 100%;
+    }
+
+    .news-read-btn, .news-analyze-btn {
+        flex: 1;
+        text-align: center;
+        justify-content: center;
+    }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   9. SHARED RESULT PAGE
+   ══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .shared-header {
+        padding: 28px 16px 20px;
+    }
+
+    .export-bar {
+        flex-direction: column;
+        padding: 0 16px;
+        gap: 10px;
+    }
+
+        .export-bar .btn-primary,
+        .export-bar .btn-outline {
+            width: 100%;
+            justify-content: center;
+        }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   10. PAGE HERO (shared component)
+   ══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .page-hero {
+        padding: 40px 16px 28px;
+    }
+
+        .page-hero p {
+            font-size: 15px;
+        }
+}
+
+@media (max-width: 480px) {
+    .page-hero {
+        padding: 28px 12px 20px;
+    }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   11. CONTAINER & GENERAL SPACING
+   ══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 16px;
+    }
+
+    .section {
+        padding: 32px 16px;
+    }
+
+    .card {
+        padding: 20px 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 12px;
+    }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   12. PAGINATION — wrap on small screens
+   ══════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+    .pagination {
+        gap: 4px;
+        flex-wrap: wrap;
+    }
+
+    .page-btn {
+        width: 34px;
+        height: 34px;
+        font-size: 13px;
+    }
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   13. NAV RESPONSIVE — hide desktop links, show hamburger
+   ══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+
+    .nav-actions .nav-username {
+        display: none;
+    }
+
+    .nav-actions .nav-signin,
+    .nav-actions .nav-signup,
+    .nav-actions .nav-logout {
+        display: none;
+    }
+
+    .nav-hamburger {
+        display: flex;
+    }
+
+    .nav-inner {
+        gap: 0;
+        justify-content: space-between;
+    }
+
+    .nav-actions {
+        gap: 8px;
+        margin-left: 0;
+    }
+    /* Keep avatar visible */
+    .nav-avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-inner {
+        padding: 12px 16px;
+    }
+
+    .nav-brand {
+        font-size: 19px;
+    }
+
+    .brand-icon {
+        font-size: 22px;
+    }
+}
+/* ══════════════════════════════════════════════════════════
+   14. PROFILE PAGE
+   ══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .profile-grid {
+        padding: 0 16px;
+        gap: 16px;
+    }
+
+    .profile-card-body {
+        padding: 20px;
+    }
+
+    .form-row-2 {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .form-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-save {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-grid {
+        padding: 0 12px;
+        gap: 12px;
+    }
+
+    .profile-card-body {
+        padding: 16px;
+    }
+
+    .profile-card-header {
+        padding: 14px 16px;
+    }
+}

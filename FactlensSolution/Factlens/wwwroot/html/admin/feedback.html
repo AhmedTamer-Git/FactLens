@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FactLens Admin — Feedback</title>
+    <link rel="stylesheet" href="../../css/variables.css" />
+    <link rel="stylesheet" href="../../css/components.css" />
+    <link rel="stylesheet" href="../../css/admin.css" />
+    <link rel="stylesheet" href="../../css/responsive.css" />
+    <link rel="icon" href="../../assets/favicon.png" type="image/png">
+    </head>
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">Fact<strong>Lens</strong> <span class="sidebar-badge">Admin</span></div>
+            <nav class="sidebar-nav">
+                <a class="sidebar-link" href="dashboard.html"><span class="link-icon">📊</span> Dashboard</a>
+                <a class="sidebar-link" href="requests.html"><span class="link-icon">📋</span> AI Requests</a>
+                <a class="sidebar-link" href="verdicts.html"><span class="link-icon">🔬</span> Verdicts</a>
+                <a class="sidebar-link active" href="feedback.html"><span class="link-icon">💬</span> Feedback</a>
+                <a class="sidebar-link" href="../home.html"><span class="link-icon">🏠</span> Back to Site</a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="sidebar-user" id="sidebarUser">—</div>
+                <button class="sidebar-logout" onclick="Auth.logout()">Sign Out</button>
+            </div>
+        </aside>
+
+        <main class="admin-main">
+            <div class="admin-topbar"><h2>User Feedback</h2></div>
+            <div class="admin-content">
+
+                <!-- Filter -->
+                <div class="admin-filters">
+                    <label style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--navy);cursor:pointer;">
+                        <input type="checkbox" id="reportedOnly" style="accent-color:var(--gold);width:16px;height:16px;" />
+                        Show Reported Only
+                    </label>
+                </div>
+
+                <div class="admin-section">
+                    <div class="admin-section-body">
+                        <div class="admin-table-wrap">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>User ID</th>
+                                        <th>Record ID</th>
+                                        <th>Helpful</th>
+                                        <th>Rating</th>
+                                        <th>Reported</th>
+                                        <th>Comment</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="feedbackTable">
+                                    <tr><td colspan="8" style="text-align:center;padding:40px;">Loading…</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="pagination" class="pagination" style="margin-top:20px;"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../js/shared.js"></script>
+    <script>
+        var currentPage = 1;
+        var PAGE_SIZE = 50;
+
+        document.addEventListener("DOMContentLoaded", function () {
+            if (!requireAdmin()) return;
+
+            var user = Auth.getUser();
+            var sidebarUser = document.getElementById("sidebarUser");
+            if (sidebarUser) sidebarUser.textContent = (user && (user.fullName || user.username)) || "Admin";
+
+            document.getElementById("reportedOnly").addEventListener("change", function () {
+                currentPage = 1;
+                load();
+            });
+
+            load();
+        });
+
+        async function load() {
+            var reported = document.getElementById("reportedOnly").checked;
+
+            // ✅ GET /api/admin/feedback?page=1&pageSize=50&reportedOnly=true
+            var params = new URLSearchParams({ page: currentPage, pageSize: PAGE_SIZE });
+            if (reported) params.set("reportedOnly", "true");
+
+            var tbody = document.getElementById("feedbackTable");
+            tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;">Loading…</td></tr>';
+
+            try {
+                var res = await apiFetch("/api/admin/feedback?" + params.toString());
+                if (!res.ok) throw new Error("HTTP " + res.status);
+                var data = await res.json();
+
+                if (!data.data || !data.data.length) {
+                    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--gray-400);">No feedback records found.</td></tr>';
+                    document.getElementById("pagination").innerHTML = "";
+                    return;
+                }
+
+                tbody.innerHTML = data.data.map(function (f) {
+                    var stars = f.rating
+                        ? "★".repeat(f.rating) + "☆".repeat(5 - f.rating)
+                        : "—";
+                    return "<tr>"
+                        + "<td>" + f.id + "</td>"
+                        + '<td class="td-truncate" style="max-width:100px;" title="' + escHtml(f.userId || "") + '">'
+                        + escHtml((f.userId || "—").slice(0, 14)) + "…</td>"
+                        + "<td>" + f.searchRecordId + "</td>"
+                        + "<td>" + (f.helpful
+                            ? '<span style="color:#22c55e;font-weight:700;">👍 Yes</span>'
+                            : '<span style="color:#ef4444;font-weight:700;">👎 No</span>') + "</td>"
+                        + '<td style="color:var(--gold-dark);">' + stars + "</td>"
+                        + "<td>" + (f.reportIncorrect
+                            ? '<span class="report-pill">⚠️ Reported</span>'
+                            : "—") + "</td>"
+                        + '<td class="td-truncate" style="max-width:200px;">' + escHtml(f.comment || "—") + "</td>"
+                        + '<td style="white-space:nowrap;">' + fmtDateTime(f.createdAt) + "</td>"
+                        + "</tr>";
+                }).join("");
+
+                renderPagination(data.totalCount || 0);
+            } catch (err) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:#ef4444;padding:40px;">'
+                    + "Failed to load: " + err.message + "</td></tr>";
+            }
+        }
+
+        function renderPagination(total) {
+            var pages = Math.ceil(total / PAGE_SIZE);
+            var pag = document.getElementById("pagination");
+            if (pages <= 1) { pag.innerHTML = ""; return; }
+
+            var html = '<button class="page-btn" ' + (currentPage === 1 ? "disabled" : "") + ' onclick="goPage(' + (currentPage - 1) + ')">‹</button>';
+            for (var i = 1; i <= Math.min(pages, 10); i++) {
+                html += '<button class="page-btn ' + (i === currentPage ? "active" : "") + '" onclick="goPage(' + i + ')">' + i + '</button>';
+            }
+            html += '<button class="page-btn" ' + (currentPage === pages ? "disabled" : "") + ' onclick="goPage(' + (currentPage + 1) + ')">›</button>';
+            pag.innerHTML = html;
+        }
+
+        function goPage(p) { currentPage = p; load(); window.scrollTo(0, 0); }
+
+        function escHtml(s) {
+            return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+    </script>
+    <script src="../../js/admin/admin-responsive.js"></script>
+</body>
+</html>

@@ -1,0 +1,400 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FactLens — Check Your Email</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" />
+    <link rel="icon" href="../assets/favicon.png" type="image/png">
+    <style>
+        :root {
+            --navy: #1A305B;
+            --navy-light: #243f73;
+            --gold: #CDA755;
+            --gold-dark: #a8883e;
+            --cream: #FAF9F6;
+            --white: #FFFFFF;
+            --gray-100: #F1F3F5;
+            --gray-200: #E9ECEF;
+            --gray-400: #9CA3AF;
+            --gray-500: #78808A;
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-xl: 32px;
+            --shadow-lg: 0 10px 40px rgba(0,0,0,.14);
+            --shadow-gold: 0 4px 20px rgba(205,167,85,.30);
+            --ease: cubic-bezier(.4,0,.2,1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--cream);
+            background-image: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(205,167,85,.18) 0%, transparent 60%), radial-gradient(ellipse 40% 40% at 85% 80%, rgba(26,48,91,.07) 0%, transparent 60%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ── Brand ── */
+        .brand-link {
+            position: fixed;
+            top: 20px;
+            left: 28px;
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color .2s;
+            z-index: 10;
+        }
+
+            .brand-link:hover {
+                color: var(--gold);
+            }
+
+            .brand-link .hex {
+                font-size: 24px;
+                color: var(--gold);
+            }
+
+            .brand-link strong {
+                color: var(--gold);
+            }
+
+        /* ── Card ── */
+        .card {
+            width: 100%;
+            max-width: 460px;
+            background: var(--white);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg), 0 0 0 1px rgba(205,167,85,.10);
+            padding: 52px 40px 44px;
+            text-align: center;
+            animation: cardIn .55s var(--ease) both;
+        }
+
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ── Progress Steps ── */
+        .steps {
+            display: flex;
+            margin-bottom: 36px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid var(--gray-200);
+        }
+
+        .step {
+            flex: 1;
+            padding: 13px 8px 11px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-400);
+            text-align: center;
+            background: var(--gray-100);
+            border-right: 1px solid var(--gray-200);
+            line-height: 1.4;
+        }
+
+            .step:last-child {
+                border-right: none;
+            }
+
+            .step.done {
+                background: rgba(34,197,94,.08);
+                color: #22c55e;
+            }
+
+            .step.active {
+                background: rgba(205,167,85,.10);
+                color: var(--navy);
+                font-weight: 700;
+            }
+
+        .step-num {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            margin: 0 auto 6px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .step.done .step-num {
+            background: #22c55e;
+            color: #fff;
+        }
+
+        .step.active .step-num {
+            background: var(--gold);
+            color: var(--navy);
+        }
+
+        .step:not(.done):not(.active) .step-num {
+            background: var(--gray-200);
+            color: var(--gray-400);
+        }
+
+        /* ── Icon ── */
+        .icon-wrap {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--navy), var(--navy-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 28px;
+            box-shadow: 0 8px 28px rgba(26,48,91,.22);
+            position: relative;
+            animation: iconPop .55s .15s var(--ease) both;
+        }
+
+        @keyframes iconPop {
+            0% {
+                transform: scale(.6);
+                opacity: 0;
+            }
+
+            70% {
+                transform: scale(1.08);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .icon-wrap::after {
+            content: "";
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 16px;
+            height: 16px;
+            background: var(--gold);
+            border-radius: 50%;
+            border: 2.5px solid var(--white);
+            animation: dot-pulse 2s 1s infinite;
+        }
+
+        @keyframes dot-pulse {
+            0%,100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(205,167,85,.5);
+            }
+
+            50% {
+                transform: scale(1.15);
+                box-shadow: 0 0 0 7px rgba(205,167,85,0);
+            }
+        }
+
+        /* ── Text ── */
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            color: var(--navy);
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+            .card-title em {
+                color: var(--gold);
+                font-style: italic;
+            }
+
+        .card-text {
+            font-size: 15px;
+            color: var(--gray-500);
+            line-height: 1.75;
+            margin-bottom: 28px;
+        }
+
+        /* ── Hint ── */
+        .hint-box {
+            background: rgba(205,167,85,.07);
+            border: 1px solid rgba(205,167,85,.22);
+            border-radius: var(--radius-md);
+            padding: 16px 18px;
+            margin-bottom: 28px;
+            text-align: left;
+        }
+
+            .hint-box p {
+                font-size: 13px;
+                color: var(--gray-500);
+                line-height: 1.7;
+            }
+
+            .hint-box strong {
+                color: var(--navy);
+            }
+
+        /* ── Button ── */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 14px 24px;
+            background: var(--gold);
+            color: var(--navy);
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background .2s, transform .2s, box-shadow .2s;
+            box-shadow: var(--shadow-gold);
+        }
+
+            .btn-primary:hover {
+                background: var(--gold-dark);
+                transform: translateY(-2px);
+                box-shadow: 0 8px 28px rgba(205,167,85,.38);
+            }
+
+        .footer-note {
+            margin-top: 18px;
+            font-size: 13px;
+            color: var(--gray-400);
+        }
+
+            .footer-note a {
+                color: var(--gold-dark);
+                font-weight: 600;
+            }
+
+                .footer-note a:hover {
+                    text-decoration: underline;
+                }
+
+        /* ── Responsive ── */
+        @media (max-width: 520px) {
+            .brand-link {
+                position: relative;
+                top: auto;
+                left: auto;
+                margin-bottom: 28px;
+            }
+
+            body {
+                justify-content: flex-start;
+                padding-top: 24px;
+            }
+
+            .card {
+                padding: 32px 22px 28px;
+                border-radius: 20px;
+            }
+
+            .card-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="home.html" class="brand-link">
+        <span class="hex">⬡</span>
+        Fact<strong>Lens</strong>
+    </a>
+
+    <div class="card">
+
+        <!-- Steps -->
+        <div class="steps">
+            <div class="step done">
+                <div class="step-num">✓</div>
+                Create Account
+            </div>
+            <div class="step active">
+                <div class="step-num">2</div>
+                Verify Email
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                Start Verifying
+            </div>
+        </div>
+
+        <!-- Icon -->
+        <div class="icon-wrap">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="4" y="9" width="32" height="22" rx="3" stroke="#CDA755" stroke-width="2.2" />
+                <path d="M4 12l16 11 16-11" stroke="#CDA755" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </div>
+
+        <h1 class="card-title">Check Your <em>Email</em></h1>
+
+        <p class="card-text">
+            We've sent a confirmation link to your inbox.<br />
+            Click it to activate your account and start<br />verifying news with AI.
+        </p>
+
+        <div class="hint-box">
+            <p>
+                <strong>📬 Didn't receive it?</strong> Check your spam or junk folder.
+                The email comes from <strong>FactLens</strong> and may take a minute to arrive.
+            </p>
+        </div>
+
+        <a href="login.html" class="btn-primary">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                <polyline points="10 17 15 12 10 7" />
+                <line x1="15" y1="12" x2="3" y2="12" />
+            </svg>
+            Go to Sign In
+        </a>
+
+        <p class="footer-note">
+            Wrong email? <a href="sign_up.html">Sign up again</a>
+        </p>
+
+    </div>
+
+</body>
+</html>

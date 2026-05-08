@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FactLens — News Feed</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/variables.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/home.css" />
+    <link rel="icon" href="../assets/favicon.png" type="image/png">
+    <style>
+        .news-hero {
+            text-align: center;
+            padding: 56px 24px 32px;
+        }
+
+            .news-hero h1 {
+                font-family: 'Playfair Display',serif;
+                font-size: clamp(28px,4.5vw,46px);
+                color: var(--navy);
+                line-height: 1.15;
+                margin-bottom: 10px;
+            }
+
+                .news-hero h1 em {
+                    color: var(--gold);
+                    font-style: italic;
+                }
+
+            .news-hero p {
+                font-size: 15px;
+                color: var(--gray-500);
+                max-width: 480px;
+                margin: 0 auto;
+            }
+
+        .news-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1240px;
+            margin: 0 auto 16px;
+            padding: 0 24px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+            .news-toolbar span {
+                font-size: 13px;
+                color: var(--gray-400);
+            }
+
+        .refresh-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 18px;
+            background: var(--navy);
+            color: var(--gold);
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .2s;
+        }
+
+            .refresh-btn:hover {
+                background: var(--navy-light);
+            }
+
+            .refresh-btn.spinning {
+                opacity: .6;
+                pointer-events: none;
+            }
+
+        .category-tabs {
+            max-width: 1240px;
+            margin: 0 auto 24px;
+            padding: 0 24px;
+        }
+
+        .category-tabs-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .cat-tab {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 22px;
+            border-radius: 50px;
+            border: 1.5px solid var(--gray-200);
+            background: var(--white);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-700);
+            cursor: pointer;
+            transition: all .18s;
+            white-space: nowrap;
+        }
+
+            .cat-tab:hover {
+                border-color: var(--gold);
+                color: var(--navy);
+            }
+
+            .cat-tab.active {
+                background: var(--navy);
+                border-color: var(--navy);
+                color: var(--gold);
+            }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill,minmax(290px,1fr));
+            gap: 22px;
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .news-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-100);
+            display: flex;
+            flex-direction: column;
+            transition: transform .22s,box-shadow .22s;
+        }
+
+            .news-card:hover {
+                transform: translateY(-4px);
+                box-shadow: var(--shadow-lg);
+                border-color: rgba(205,167,85,.25);
+            }
+
+        .news-card-img {
+            width: 100%;
+            height: 185px;
+            object-fit: cover;
+            display: block;
+            background: var(--gray-100);
+        }
+
+        .news-card-img-placeholder {
+            width: 100%;
+            height: 185px;
+            background: linear-gradient(135deg,var(--navy),var(--navy-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 38px;
+            opacity: .25;
+        }
+
+        .news-card-body {
+            padding: 16px 18px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .news-card-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+        }
+
+        .news-card-source {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: var(--gold-dark);
+        }
+
+        .news-card-cat-badge {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 50px;
+            background: rgba(26,48,91,.07);
+            color: var(--navy);
+            text-transform: uppercase;
+            letter-spacing: .04em;
+        }
+
+        .news-card-title {
+            font-family: 'Playfair Display',serif;
+            font-size: 15.5px;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .news-card-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            line-height: 1.55;
+            flex: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .news-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 4px;
+            padding-top: 11px;
+            border-top: 1px solid var(--gray-100);
+        }
+
+        .news-card-date {
+            font-size: 11px;
+            color: var(--gray-400);
+        }
+
+        .news-card-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .news-read-btn {
+            padding: 6px 11px;
+            background: var(--navy);
+            color: var(--gold);
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+
+            .news-read-btn:hover {
+                background: var(--navy-light);
+            }
+
+        .news-analyze-btn {
+            padding: 6px 11px;
+            background: var(--gold);
+            color: var(--navy);
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .2s;
+        }
+
+            .news-analyze-btn:hover {
+                background: var(--gold-dark);
+            }
+
+        .news-skeleton {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-100);
+        }
+
+        .skeleton-img {
+            width: 100%;
+            height: 185px;
+            background: var(--gray-100);
+            animation: shimmer 1.4s infinite;
+        }
+
+        .skeleton-body {
+            padding: 16px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .skeleton-line {
+            height: 11px;
+            border-radius: 6px;
+            background: var(--gray-100);
+            animation: shimmer 1.4s infinite;
+        }
+
+            .skeleton-line.w60 {
+                width: 60%
+            }
+
+            .skeleton-line.w80 {
+                width: 80%
+            }
+
+            .skeleton-line.w40 {
+                width: 40%
+            }
+
+        @keyframes shimmer {
+            0%,100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .35
+            }
+        }
+
+        .news-section-wrap {
+            padding-bottom: 60px;
+        }
+
+        @media(max-width:640px) {
+            .news-grid {
+                grid-template-columns: 1fr
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body>
+    <nav id="main-nav"></nav>
+
+    <div class="news-hero">
+        <div class="hero-badge">📰 Live News</div>
+        <h1>Top <em>Headlines</em></h1>
+        <p>Latest Arabic and international news. Instantly verify any headline with AI fact-checking.</p>
+    </div>
+
+    <div class="news-toolbar">
+        <span id="newsStatus">Loading…</span>
+        <button class="refresh-btn" id="refreshBtn" onclick="refreshNews()">🔄 Refresh</button>
+    </div>
+
+    <div class="category-tabs">
+        <div class="category-tabs-row">
+            <button class="cat-tab active" data-cat="all" onclick="switchCat('all',this)">     🌐 All</button>
+            <button class="cat-tab" data-cat="news" onclick="switchCat('news',this)">    🏛️ News & Politics</button>
+            <button class="cat-tab" data-cat="economy" onclick="switchCat('economy',this)"> 💰 Economy</button>
+            <button class="cat-tab" data-cat="sports" onclick="switchCat('sports',this)">  ⚽ Sports</button>
+        </div>
+    </div>
+
+    <div class="news-section-wrap">
+        <div class="news-grid" id="newsGrid"></div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="footer-inner">
+            <div>
+                <div class="footer-brand-name">Fact<strong>Lens</strong></div>
+                <p class="footer-desc">Latest news with instant AI fact-checking.</p>
+            </div>
+            <div>
+                <div class="footer-heading">Navigation</div>
+                <div class="footer-links">
+                    <a href="home.html">Home</a><a href="history.html">History</a>
+                    <a href="News-Feed.html">News Feed</a><a href="about.html">About Us</a>
+                </div>
+            </div>
+            <div>
+                <div class="footer-heading">Legal</div>
+                <div class="footer-links"><a href="#">Privacy</a><a href="#">Terms</a></div>
+            </div>
+        </div>
+        <div class="footer-bottom">FactLens © 2025 — Powered by AI</div>
+    </footer>
+
+    <script src="../js/shared.js"></script>
+    <script>
+        renderNav("News-Feed");
+
+        var CACHE = {};
+        var activeCat = "all";
+        var RSS2JSON = "https://api.rss2json.com/v1/api.json?rss_url=";
+
+        var CAT_SOURCES = {
+            news: [
+                { name: "الجزيرة", url: "https://www.aljazeera.net/aljazeera.rss" },
+                { name: "BBC عربي", url: "https://www.bbc.com/arabic/index.xml" },
+                { name: "CNN عربي", url: "https://arabic.cnn.com/api/v1/rss/rss.xml" },
+                { name: "العربية", url: "https://www.alarabiya.net/ar/rss/saudi-world.xml" },
+                { name: "سكاي نيوز عربية", url: "https://www.skynewsarabia.com/rss" },
+                { name: "الشرق الأوسط", url: "https://aawsat.com/rss" },
+                { name: "RT عربي", url: "https://arabic.rt.com/rss/allnews/" },
+                { name: "الحرة", url: "https://www.alhurra.com/rss.xml" },
+                { name: "Reuters", url: "https://feeds.reuters.com/reuters/topNews" },
+                { name: "BBC World", url: "https://feeds.bbci.co.uk/news/world/rss.xml" },
+            ],
+            economy: [
+                { name: "الجزيرة اقتصاد", url: "https://www.aljazeera.net/rss/economy" },
+                { name: "CNN عربي - اقتصاد", "url": "https://arabic.cnn.com/api/v1/rss/economy.xml" },
+                { name: "العربية اقتصاد", url: "https://www.alarabiya.net/ar/rss/economy.xml" },
+                { name: "الاقتصادية", url: "https://aleqt.com/feed/rss_section/front_page.xml" },
+                { name: "سكاي نيوز مال", url: "https://www.skynewsarabia.com/rss/business" },
+                { name: "BBC Business", url: "https://feeds.bbci.co.uk/news/business/rss.xml" },
+            ],
+            sports: [
+                // Arabic
+                { name: "يلا كورة", url: "https://www.yallakora.com/rss/all-news" },
+                { name: "سكاي نيوز رياضة", url: "https://www.skynewsarabia.com/rss/sport" },
+                { name: "العربية رياضة", url: "https://www.alarabiya.net/ar/rss/sport.xml" },
+                { name: "يوم7 رياضة", url: "https://www.youm7.com/rssfeeds/sports" },
+                { name: "الأهرام رياضي", url: "https://sports.ahram.org.eg/rss.xml" },
+                { name: "KingFut", url: "https://feeds.feedburner.com/KingFut" },
+                { name: "Arab News Sport", url: "https://www.arabnews.com/taxonomy/term/9/feed" },
+                { name: "Gulf News Sport", url: "https://gulfnews.com/rss/sport" },
+                { name: "Sport360", url: "https://sport360.com/feed" },
+                { name: "The National Sport", "url": "https://www.thenationalnews.com/sport/rss" },
+                // International
+                { name: "BBC Sport", url: "https://feeds.bbci.co.uk/sport/rss.xml" },
+                { name: "ESPN", url: "https://www.espn.com/espn/rss/news" },
+                { name: "Sky Sports", url: "https://www.skysports.com/rss/12040" },
+                { name: "Reuters Sports", url: "https://feeds.reuters.com/reuters/sportsNews" },
+            ],
+        };
+
+        // "all" = merge news + economy + sports
+        var ALL_CATS = ["news", "economy", "sports"];
+
+        var CAT_LABELS = { all: "All", news: "News", economy: "Economy", sports: "Sports" };
+
+        async function fetchOne(source) {
+            try {
+                var controller = new AbortController();
+                var timer = setTimeout(function () { controller.abort(); }, 6000);
+                var res = await fetch(RSS2JSON + encodeURIComponent(source.url), { signal: controller.signal });
+                clearTimeout(timer);
+                var data = await res.json();
+                return (data.items || []).map(function (it) { it.sourceName = source.name; return it; });
+            } catch { return []; }
+        }
+
+        async function fetchCategory(cat) {
+            if (CACHE[cat]) return CACHE[cat];
+            var sources = CAT_SOURCES[cat] || [];
+            var all = [];
+            for (var i = 0; i < sources.length; i += 4) {
+                var batch = sources.slice(i, i + 4);
+                var results = await Promise.allSettled(batch.map(fetchOne));
+                results.forEach(function (r) { if (r.status === "fulfilled") all = all.concat(r.value); });
+            }
+            all.sort(function (a, b) { return new Date(b.pubDate) - new Date(a.pubDate); });
+            CACHE[cat] = all;
+            return all;
+        }
+
+        async function loadCategory(cat) {
+            showSkeletons();
+            setStatus("Loading…");
+
+            var items = [];
+            if (cat === "all") {
+                // Load all 3 categories in parallel, merge, sort
+                var results = await Promise.all(ALL_CATS.map(fetchCategory));
+                results.forEach(function (r) { items = items.concat(r); });
+                items.sort(function (a, b) { return new Date(b.pubDate) - new Date(a.pubDate); });
+            } else {
+                items = await fetchCategory(cat);
+            }
+
+            renderGrid(items, cat);
+            setStatus(Math.min(items.length, 36) + " articles · " + CAT_LABELS[cat]
+                + " · " + new Date().toLocaleTimeString("en-US"));
+        }
+
+        function setStatus(msg) {
+            document.getElementById("newsStatus").textContent = msg;
+        }
+
+        function switchCat(cat, btn) {
+            activeCat = cat;
+            document.querySelectorAll(".cat-tab").forEach(function (t) { t.classList.remove("active"); });
+            btn.classList.add("active");
+            loadCategory(cat);
+        }
+
+        function refreshNews() {
+            var btn = document.getElementById("refreshBtn");
+            btn.textContent = "⏳ Refreshing…";
+            btn.classList.add("spinning");
+            // Clear cache for current cat (or all 3 if "all")
+            if (activeCat === "all") ALL_CATS.forEach(function (c) { delete CACHE[c]; });
+            else delete CACHE[activeCat];
+            loadCategory(activeCat).finally(function () {
+                btn.textContent = "🔄 Refresh";
+                btn.classList.remove("spinning");
+            });
+        }
+
+        function extractImage(item) {
+            if (item.enclosure && item.enclosure.link) return item.enclosure.link;
+            if (item.thumbnail) return item.thumbnail;
+            var m = (item.content || "").match(/<img[^>]+src="([^"]+)"/);
+            return m ? m[1] : null;
+        }
+
+        function fmtDate(d) {
+            try {
+                return new Date(d).toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+            } catch { return ""; }
+        }
+
+        // Badge color per category
+        var CAT_BADGE_STYLE = {
+            news: "background:rgba(26,48,91,.08);color:var(--navy)",
+            economy: "background:rgba(205,167,85,.15);color:#8a6a1a",
+            sports: "background:rgba(34,197,94,.10);color:#166534",
+        };
+
+        function renderGrid(items, cat) {
+            var grid = document.getElementById("newsGrid");
+            if (!items.length) {
+                grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1">'
+                    + '<div class="empty-icon">📭</div><h3>No articles found</h3>'
+                    + '<p>Try refreshing or selecting a different category.</p></div>';
+                return;
+            }
+            grid.innerHTML = items.slice(0, 36).map(function (item) {
+                var img = extractImage(item);
+                var imgHtml = img
+                    ? '<img class="news-card-img" src="' + escHtml(img) + '" alt="" loading="lazy" onerror="this.parentNode.innerHTML=\'<div class=news-card-img-placeholder>📰</div>\'">'
+                    : '<div class="news-card-img-placeholder">📰</div>';
+                var desc = (item.description || "").replace(/<[^>]+>/g, "").trim().slice(0, 110);
+                var title = (item.title || "").trim();
+                var itemCat = item._cat || cat;
+                var badgeStyle = CAT_BADGE_STYLE[itemCat] || CAT_BADGE_STYLE.news;
+                var badgeLabel = CAT_LABELS[itemCat] || "";
+
+                return '<div class="news-card">'
+                    + imgHtml
+                    + '<div class="news-card-body">'
+                    + '<div class="news-card-meta">'
+                    + '<span class="news-card-source">📡 ' + escHtml(item.sourceName) + '</span>'
+                    + '<span class="news-card-cat-badge" style="' + badgeStyle + '">' + badgeLabel + '</span>'
+                    + '</div>'
+                    + '<div class="news-card-title">' + escHtml(title) + '</div>'
+                    + (desc ? '<div class="news-card-desc">' + escHtml(desc) + '</div>' : '')
+                    + '<div class="news-card-footer">'
+                    + '<span class="news-card-date">🕐 ' + fmtDate(item.pubDate) + '</span>'
+                    + '<div class="news-card-actions">'
+                    + '<a href="' + escHtml(item.link || "#") + '" target="_blank" rel="noopener" class="news-read-btn">Read</a>'
+                    + '<button class="news-analyze-btn" data-title="' + escHtml(title) + '" onclick="analyzeNews(this)">Verify ⬡</button>'
+                    + '</div></div></div></div>';
+            }).join("");
+        }
+
+        function showSkeletons() {
+            document.getElementById("newsGrid").innerHTML = Array(9).fill(
+                '<div class="news-skeleton"><div class="skeleton-img"></div>'
+                + '<div class="skeleton-body"><div class="skeleton-line w40"></div>'
+                + '<div class="skeleton-line w80"></div><div class="skeleton-line w60"></div>'
+                + '</div></div>'
+            ).join("");
+        }
+
+        function analyzeNews(btn) {
+            var title = btn.getAttribute("data-title");
+            if (!Auth.isLoggedIn()) { sessionStorage.setItem("fl_prefill", title); window.location.href = "login.html"; return; }
+            sessionStorage.setItem("fl_prefill", title);
+            window.location.href = "home.html";
+        }
+
+        function escHtml(s) {
+            return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+        }
+
+        loadCategory(activeCat);
+    </script>
+</body>
+</html>

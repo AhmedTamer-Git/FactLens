@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Factlens.Core/Factlens.Core.csproj" />
+  <Project Path="Factlens.Data/Factlens.Data.csproj" />
+  <Project Path="Factlens.Services/Factlens.Services.csproj" />
+  <Project Path="Factlens/Factlens.csproj" />
+</Solution>

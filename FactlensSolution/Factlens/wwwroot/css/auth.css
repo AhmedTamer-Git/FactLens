@@ -1,0 +1,220 @@
+/* ============================================================
+   FACTLENS — Auth Pages (Login / Sign Up / Reset)
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap');
+
+.auth-body {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 40px 20px;
+  background: var(--cream);
+  background-image: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(205,167,85,.15) 0%, transparent 60%);
+}
+
+/* ── Back to home ──────────────────────────────────────────── */
+.auth-back-home {
+  position: fixed; top: 20px; left: 28px;
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700;
+  color: var(--navy); display: flex; align-items: center; gap: 8px;
+}
+.auth-back-home:hover { color: var(--gold); }
+
+/* ── Card ─────────────────────────────────────────────────── */
+.auth-card {
+  width: 100%; max-width: 440px;
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(205,167,85,.10);
+  padding: 40px 36px;
+}
+
+/* ── Header ───────────────────────────────────────────────── */
+.auth-header { text-align: center; margin-bottom: 28px; }
+.auth-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px; color: var(--navy); margin-bottom: 6px;
+}
+.auth-header p { font-size: 14px; color: var(--gray-500); }
+
+/* ── Toggle ───────────────────────────────────────────────── */
+.auth-toggle {
+  display: flex; background: var(--gray-100);
+  border-radius: var(--radius-sm); padding: 4px;
+  margin-bottom: 28px;
+}
+.toggle-btn {
+  flex: 1; padding: 10px;
+  border: none; background: transparent;
+  border-radius: 6px; font-weight: 600; font-size: 14px;
+  color: var(--gray-700); cursor: pointer;
+  transition: all .2s var(--ease);
+}
+.toggle-btn.active {
+  background: var(--gold); color: var(--navy);
+  box-shadow: var(--shadow-sm);
+}
+.toggle-btn:hover:not(.active) { background: var(--gray-200); }
+
+/* ── Form ─────────────────────────────────────────────────── */
+.form-group { margin-bottom: 18px; }
+.form-group label {
+  display: block; font-size: 13px; font-weight: 600;
+  color: var(--navy); margin-bottom: 7px;
+}
+.input-wrap {
+  position: relative;
+}
+.input-wrap input {
+  width: 100%; padding: 12px 44px;
+  border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm);
+  font-size: 14px; font-family: var(--font-body);
+  color: var(--navy); outline: none;
+  transition: border-color .2s;
+}
+.input-wrap input:focus { border-color: var(--gold); }
+.input-icon {
+  position: absolute; left: 14px; top: 50%;
+  transform: translateY(-50%); color: var(--gray-400); font-size: 14px;
+  pointer-events: none;
+}
+.toggle-pw {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; color: var(--gray-400);
+  font-size: 14px; cursor: pointer; padding: 4px;
+}
+.toggle-pw:hover { color: var(--navy); }
+
+/* ── Row ──────────────────────────────────────────────────── */
+.form-row {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 20px;
+}
+.check-label {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--gray-500); cursor: pointer;
+}
+.check-label input { accent-color: var(--gold); width: 15px; height: 15px; }
+.link-gold { color: var(--gold-dark); font-size: 13px; font-weight: 600; }
+.link-gold:hover { text-decoration: underline; }
+
+/* ── Error ────────────────────────────────────────────────── */
+.form-error {
+  color: #ef4444; font-size: 13px; text-align: center;
+  min-height: 18px; margin-bottom: 10px;
+}
+.form-success {
+  color: #22c55e; font-size: 13px; text-align: center;
+  min-height: 18px; margin-bottom: 10px;
+}
+
+/* ── Submit ───────────────────────────────────────────────── */
+.btn-auth {
+  width: 100%; padding: 13px;
+  background: var(--gold); color: var(--navy);
+  border: none; border-radius: var(--radius-sm);
+  font-size: 16px; font-weight: 700; cursor: pointer;
+  transition: background .2s;
+}
+.btn-auth:hover { background: var(--gold-dark); }
+.btn-auth:disabled { opacity: .6; cursor: not-allowed; }
+
+/* ── Divider ──────────────────────────────────────────────── */
+.auth-divider {
+  display: flex; align-items: center; gap: 12px;
+  color: var(--gray-400); font-size: 12px; margin: 20px 0;
+}
+.auth-divider::before, .auth-divider::after {
+  content: ""; flex: 1; border-top: 1px solid var(--gray-200);
+}
+
+/* ── Google ───────────────────────────────────────────────── */
+.btn-google {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  width: 100%; padding: 12px; border-radius: var(--radius-sm);
+  border: 1.5px solid var(--gray-200); background: var(--white);
+  font-size: 14px; font-weight: 600; color: var(--gray-700);
+  cursor: pointer; transition: all .2s;
+}
+.btn-google:hover { border-color: var(--navy); background: var(--gray-50); }
+
+/* ── Footer ───────────────────────────────────────────────── */
+.auth-footer { text-align: center; font-size: 14px; color: var(--gray-500); margin-top: 20px; }
+
+/* ── Lock icon (reset) ────────────────────────────────────── */
+.auth-lock {
+  width: 60px; height: 60px; border-radius: var(--radius-md);
+  background: var(--navy); color: var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; margin: 0 auto 20px; 
+}
+/* ── Email Not Confirmed Notice ───────────────────────────── */
+/* أضف الكود ده في آخر auth.css */
+
+.confirm-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: rgba(205,167,85,.08);
+    border: 1.5px solid rgba(205,167,85,.35);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-bottom: 10px;
+    text-align: left;
+    animation: noticeIn .3s var(--ease) both;
+}
+
+@keyframes noticeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.confirm-notice-icon {
+    font-size: 28px;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.confirm-notice-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.confirm-notice-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+}
+
+.confirm-notice-sub {
+    font-size: 13px;
+    color: var(--gray-500);
+    line-height: 1.6;
+}
+
+.confirm-notice-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 4px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gold-dark);
+    text-decoration: none;
+    transition: color .2s;
+}
+
+    .confirm-notice-btn:hover {
+        color: var(--navy);
+        text-decoration: underline;
+    }

@@ -1,0 +1,82 @@
+/* ============================================================
+   FACTLENS — Design Tokens
+   Colors: Navy #1A305B | Gold #CDA755 | Cream #FAF9F6
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap');
+
+:root {
+    /* Core Palette */
+    --navy: #1A305B;
+    --navy-light: #243f73;
+    --navy-dark: #111e3a;
+    --gold: #CDA755;
+    --gold-light: #e0bb72;
+    --gold-dark: #a8883e;
+    --cream: #FAF9F6;
+    --white: #FFFFFF;
+    --gray-50: #F8F9FA;
+    --gray-100: #F1F3F5;
+    --gray-200: #E9ECEF;
+    --gray-400: #9CA3AF;
+    --gray-500: #78808A;
+    --gray-700: #374151;
+    --gray-900: #1F2937;
+    /* Verdicts */
+    --true-color: #22c55e;
+    --true-bg: rgba(34,197,94,.12);
+    --mostly-true-color: #84cc16;
+    --mostly-true-bg: rgba(132,204,22,.12);
+    --misleading-color: #f59e0b;
+    --misleading-bg: rgba(245,158,11,.12);
+    --false-color: #ef4444;
+    --false-bg: rgba(239,68,68,.12);
+    --unverifiable-color: #8b5cf6;
+    --unverifiable-bg: rgba(139,92,246,.12);
+    /* Typography */
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'DM Sans', sans-serif;
+    /* Spacing */
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-xl: 32px;
+    /* Shadows */
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.08);
+    --shadow-md: 0 4px 16px rgba(0,0,0,.10);
+    --shadow-lg: 0 10px 40px rgba(0,0,0,.14);
+    --shadow-gold: 0 4px 20px rgba(205,167,85,.30);
+    /* Transitions */
+    --ease: cubic-bezier(.4,0,.2,1);
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    background: var(--cream);
+    color: var(--navy);
+    overflow-x: clip;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    cursor: pointer;
+    font-family: var(--font-body);
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}

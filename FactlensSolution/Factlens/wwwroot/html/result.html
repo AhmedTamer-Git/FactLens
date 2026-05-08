@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FactLens — Analysis Result</title>
+    <link rel="stylesheet" href="../css/variables.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/result.css" />
+    <link rel="icon" href="../assets/favicon.png" type="image/png">
+    <style>
+        .share-option {
+            background: var(--gray-50);
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+            border: 1px solid var(--gray-200);
+        }
+
+        .share-option-info {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .share-option-icon {
+            font-size: 22px;
+            line-height: 1;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .share-option-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 2px;
+        }
+
+        .share-option-desc {
+            font-size: 12px;
+            color: var(--gray-400);
+        }
+
+        .share-dl-btn {
+            margin-top: 10px;
+            width: 100%;
+            padding: 9px;
+            background: var(--navy);
+            color: var(--gold);
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background .2s;
+        }
+
+            .share-dl-btn:hover {
+                background: var(--navy-light);
+            }
+
+            .share-dl-btn:disabled {
+                opacity: .5;
+                cursor: not-allowed;
+            }
+    </style>
+    <link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body>
+    <nav id="main-nav"></nav>
+
+    <div class="result-page">
+        <div class="page-hero" style="padding-bottom:32px;">
+            <h1>Your News <em>Credibility</em> Result</h1>
+            <p>Analysis complete — here's what our AI found.</p>
+        </div>
+
+        <!-- Score Card -->
+        <div class="container">
+            <div class="score-card">
+                <!-- Circle -->
+                <div class="score-visual">
+                    <div class="circle-wrap">
+                        <svg viewBox="0 0 220 220" width="220" height="220">
+                            <circle class="circle-bg" cx="110" cy="110" r="90" />
+                            <circle class="circle-prog" id="circleProgress" cx="110" cy="110" r="90" />
+                        </svg>
+                        <div class="circle-label">
+                            <span id="scoreNum">0</span>
+                            <small>% Credibility</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Verdict -->
+                <div class="score-info">
+                    <div id="verdictPill" class="verdict-pill verdict-lg">—</div>
+                    <p id="claimText" class="claim-text"></p>
+                    <p id="descText" class="desc-text"></p>
+
+                    <div class="result-actions">
+                        <button id="shareBtn" class="btn-primary">
+                            <span>🔗</span> Share Result
+                        </button>
+                        <button id="analyzeAnotherBtn" class="btn-outline" onclick="location.href='home.html'">
+                            ← Analyze Another
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Share Panel (hidden by default) -->
+            <div id="shareBox" class="share-box" style="display:none;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+                    <p style="margin:0;font-size:15px;font-weight:700;color:var(--navy);">🔗 Share This Result</p>
+                    <button onclick="document.getElementById('shareBox').style.display='none'"
+                            style="background:none;border:none;font-size:20px;color:var(--gray-400);cursor:pointer;line-height:1;">
+                        ×
+                    </button>
+                </div>
+
+                <!-- Option 1: Copy Link -->
+                <div class="share-option">
+                    <div class="share-option-info">
+                        <span class="share-option-icon">🔗</span>
+                        <div>
+                            <div class="share-option-title">Share Link</div>
+                            <div class="share-option-desc">Copy a public link anyone can view</div>
+                        </div>
+                    </div>
+                    <div class="share-url-row" style="margin-top:10px;">
+                        <input type="text" id="shareUrl" readonly placeholder="Loading share link…" />
+                        <button onclick="copyShare()">Copy</button>
+                    </div>
+                </div>
+
+                <!-- Option 2: Download Image -->
+                <div class="share-option" style="margin-top:12px;">
+                    <div class="share-option-info">
+                        <span class="share-option-icon">🖼</span>
+                        <div>
+                            <div class="share-option-title">Download Image</div>
+                            <div class="share-option-desc">Save result as a PNG image to share on social media</div>
+                        </div>
+                    </div>
+                    <button id="downloadImageBtn" onclick="downloadFile('image')" class="share-dl-btn">
+                        Download PNG
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs-bar">
+                <button class="tab-btn active" data-tab="explanation">AI Explanation</button>
+                <button class="tab-btn" data-tab="sources">Evidence Sources</button>
+                <button class="tab-btn" data-tab="feedback">Give Feedback</button>
+            </div>
+
+            <!-- Tab Panels -->
+            <div class="tab-panel active" id="tab-explanation">
+                <div id="explanationContent" class="explanation-text"></div>
+            </div>
+
+            <div class="tab-panel" id="tab-sources">
+                <div id="sourcesContent"></div>
+            </div>
+
+            <div class="tab-panel" id="tab-feedback">
+                <div class="feedback-form">
+                    <h3>Was this analysis helpful?</h3>
+                    <div class="helpful-btns">
+                        <button class="helpful-btn" id="helpfulYes" onclick="setHelpful(true)">👍 Yes, helpful</button>
+                        <button class="helpful-btn" id="helpfulNo" onclick="setHelpful(false)">👎 Not helpful</button>
+                    </div>
+
+                    <label style="display:block;margin:20px 0 8px;font-weight:600;font-size:14px;">Rating (optional)</label>
+                    <div class="star-row" id="starRow">
+                        <span class="star" data-v="1">★</span>
+                        <span class="star" data-v="2">★</span>
+                        <span class="star" data-v="3">★</span>
+                        <span class="star" data-v="4">★</span>
+                        <span class="star" data-v="5">★</span>
+                    </div>
+
+                    <label class="check-label" style="margin:16px 0 12px;gap:8px;cursor:pointer;">
+                        <input type="checkbox" id="reportIncorrect" style="accent-color:var(--gold);" />
+                        <span style="font-size:14px;color:var(--gray-700);">⚠️ Report as incorrect verdict</span>
+                    </label>
+
+                    <textarea id="feedbackComment" class="input-field" rows="3" placeholder="Leave a comment (optional)…" style="resize:vertical;"></textarea>
+
+                    <p id="feedbackMsg" class="form-success" style="margin-top:10px;"></p>
+                    <button id="submitFeedback" class="btn-primary" style="margin-top:16px;">Submit Feedback</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="footer-inner">
+            <div><div class="footer-brand-name">Fact<strong>Lens</strong></div></div>
+            <div>
+                <div class="footer-heading">Navigation</div>
+                <div class="footer-links"><a href="home.html">Home</a><a href="history.html">History</a></div>
+            </div>
+            <div>
+                <div class="footer-heading">Legal</div>
+                <div class="footer-links"><a href="#">Privacy</a><a href="#">Terms</a></div>
+            </div>
+        </div>
+        <div class="footer-bottom">FactLens © 2025</div>
+    </footer>
+
+    <script src="../js/shared.js"></script>
+    <script src="../js/result.js"></script>
+</body>
+</html>

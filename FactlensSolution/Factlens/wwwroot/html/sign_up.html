@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FactLens — Sign Up</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="../css/variables.css" />
+    <link rel="stylesheet" href="../css/auth.css" />
+    <link rel="stylesheet" href="../css/responsive.css" />
+    <link rel="icon" href="../assets/favicon.png" type="image/png">
+</head>
+<body class="auth-body">
+    <a href="home.html" class="auth-back-home">⬡ FactLens</a>
+
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1>Create Account</h1>
+            <p>Start verifying news with AI today</p>
+        </div>
+
+        <div class="auth-toggle">
+            <button class="toggle-btn" onclick="location.href='login.html'">Sign In</button>
+            <button class="toggle-btn active">Sign Up</button>
+        </div>
+
+        <form id="signupForm" novalidate>
+
+            <!-- FullName -->
+            <div class="form-group">
+                <label for="fullname">Full Name</label>
+                <div class="input-wrap">
+                    <i class="fa-solid fa-user input-icon"></i>
+                    <input type="text" id="fullname" placeholder="Your full name" required />
+                </div>
+            </div>
+
+            <!-- Username -->
+            <div class="form-group">
+                <label for="username">Username</label>
+                <div class="input-wrap">
+                    <i class="fa-solid fa-at input-icon"></i>
+                    <input type="text" id="username" placeholder="Choose a username" required />
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="email">Email</label>
+                <div class="input-wrap">
+                    <i class="fa-regular fa-envelope input-icon"></i>
+                    <input type="email" id="email" placeholder="Email address" required />
+                </div>
+            </div>
+
+            <!-- Phone (optional) -->
+            <div class="form-group">
+                <label for="phone">Phone <span style="font-weight:400;color:var(--gray-400);">(optional)</span></label>
+                <div class="input-wrap">
+                    <i class="fa-solid fa-phone input-icon"></i>
+                    <input type="tel" id="phone" placeholder="+20 xxx xxx xxxx" />
+                </div>
+            </div>
+
+            <!-- Age -->
+            <div class="form-group">
+                <label for="age">Age</label>
+                <div class="input-wrap">
+                    <i class="fa-solid fa-cake-candles input-icon"></i>
+                    <input type="number" id="age" placeholder="Your age" min="13" max="120" required />
+                </div>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-wrap">
+                    <i class="fa-solid fa-lock input-icon"></i>
+                    <input type="password" id="password" placeholder="Create a password" required />
+                    <button type="button" class="toggle-pw" onclick="togglePw('password', this)">
+                        <i class="fa-regular fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Confirm Password  ← matches RegisterDto.ConfirmPassword -->
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <div class="input-wrap">
+                    <i class="fa-solid fa-lock input-icon"></i>
+                    <input type="password" id="confirmPassword" placeholder="Repeat your password" required />
+                    <button type="button" class="toggle-pw" onclick="togglePw('confirmPassword', this)">
+                        <i class="fa-regular fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Terms -->
+            <div class="form-group" style="margin-bottom:20px;">
+                <label class="check-label" style="font-size:13px;color:var(--gray-500);">
+                    <input type="checkbox" id="terms" required style="margin:0;" />
+                    <span>
+                        I agree to the
+                        <a class="link-gold" href="#">Terms of Service</a> and
+                        <a class="link-gold" href="#">Privacy Policy</a>
+                    </span>
+                </label>
+            </div>
+
+            <p id="signupError" class="form-error"></p>
+            <p id="signupSuccess" class="form-success"></p>
+
+            <button type="submit" class="btn-auth" id="signupBtn">Create Account</button>
+        </form>
+
+        <p class="auth-footer">Already have an account? <a href="login.html" class="link-gold">Sign In</a></p>
+    </div>
+
+    <script src="../js/shared.js"></script>
+    <script src="../js/sign_up.js"></script>
+</body>
+</html>

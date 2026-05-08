@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FactLens — Shared Result</title>
+    <link rel="stylesheet" href="../css/variables.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/result.css" />
+    <link rel="icon" href="../assets/favicon.png" type="image/png">
+    <style>
+        .shared-header {
+            text-align: center;
+            padding: 40px 24px 24px;
+            background: linear-gradient(135deg, var(--navy), var(--navy-light));
+            color: var(--white);
+            margin-bottom: 32px;
+        }
+
+            .shared-header .brand {
+                font-family: 'Playfair Display', serif;
+                font-size: 28px;
+                margin-bottom: 6px;
+            }
+
+                .shared-header .brand strong {
+                    color: var(--gold);
+                }
+
+            .shared-header p {
+                opacity: .7;
+                font-size: 14px;
+            }
+
+        .export-bar {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+    </style>
+    <link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body style="background:var(--cream);">
+    <!-- No nav - public page -->
+    <div class="shared-header">
+        <div class="brand">Fact<strong>Lens</strong></div>
+        <p>Shared analysis result</p>
+    </div>
+
+    <div class="container" id="sharedContent">
+        <div class="loading-center"><div class="spinner"></div><span>Loading result…</span></div>
+    </div>
+
+    <script src="../js/shared.js"></script>
+    <script src="../js/shared-result.js"></script>
+</body>
+</html>

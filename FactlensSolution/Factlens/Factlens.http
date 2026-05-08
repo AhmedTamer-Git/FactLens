@@ -1,0 +1,6 @@
+@Factlens_HostAddress = http://localhost:5186
+
+GET {{Factlens_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
