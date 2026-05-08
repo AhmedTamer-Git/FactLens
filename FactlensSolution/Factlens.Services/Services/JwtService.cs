@@ -15,7 +15,6 @@ namespace Factlens.Services.Services
             _config = config;
         }
 
-        // ✅ القديمة: هتفضل شغالة زي ما هي
         public string GenerateToken(string userId, string email, string name)
             => GenerateToken(userId, email, name, roles: null);
 
