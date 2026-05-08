@@ -1,0 +1,29 @@
+## .NET Core
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+
+## Visual Studio
+.vs/
+.vscode/
+*.user
+*.userosscache
+*.sln.docuser
+*.suo
+*.user
+*.userosscache
+*.sln.docuser
+*.sublime-project
+*.sublime-workspace
+
+## Databases & Backup
+*.mdf
+*.ldf
+*.db
+*.bak
+
+## Secrets & Config
+# We ignore the real appsettings, but keep the example one
+appsettings.json
+appsettings.Development.json
